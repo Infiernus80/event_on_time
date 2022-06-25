@@ -16,7 +16,13 @@ class MyApp extends StatelessWidget {
         HomeScreen.route:(context) => const HomeScreen(),
       },
       initialRoute: HomeScreen.route,
-      theme: ThemeData.light().copyWith(
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'Inter',
+        // Color de las letras
+        primaryColor: Color.fromRGBO(228, 161, 147, 1),
+        secondaryHeaderColor: primary,
+
         scaffoldBackgroundColor: primary,
         textTheme: const TextTheme(
           titleSmall: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, color: Colors.white)

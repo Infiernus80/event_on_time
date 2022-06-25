@@ -9,8 +9,21 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: const [
-          ImagesUp()
+        children:[
+          Column(
+            children: [
+              Row(
+                children: const[
+                  ImagesUp(),
+                ],
+              ),
+              Row(
+                children: const[
+                  FormHome()
+                ],
+              )
+            ],
+          ),
         ],
       )
     );

@@ -5,19 +5,33 @@ class ImagesUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image(image: AssetImage('assets/Logo.png'),width: 123,height: 103,alignment:Alignment.topLeft,),
-              Image(image: AssetImage('assets/Logo.png'),width: 240,height: 240,alignment:Alignment.topRight,),
-            ],
-          )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: const [
+                Image(
+                  image: AssetImage('assets/images/cordon.png'),
+                  width: 190,
+                  height: 200,
+                  alignment: Alignment.topLeft,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 50),
+                  child: Image(
+                      image: AssetImage('assets/images/Logo.png'),
+                      width: 300,
+                      height: 300,
+                      alignment: Alignment.centerRight),
+                ),
+              ],
+            ),
+          ],
+        )
+      ],
     );
   }
 }
