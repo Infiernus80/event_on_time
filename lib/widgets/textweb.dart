@@ -6,8 +6,7 @@ class TextWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return Stack(children: [
       Column(
         children: const [
           Padding(
@@ -28,7 +27,6 @@ class TextWeb extends StatelessWidget {
                 maxLines: 2),
           ),
           BottonHexagon(),
-          
         ],
       ),
     ]);

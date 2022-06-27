@@ -14,18 +14,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         HomeScreen.route:(context) => const HomeScreen(),
+        InviteScreen.route:(context) => const InviteScreen(),
       },
       initialRoute: HomeScreen.route,
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Inter',
         // Color de las letras
-        primaryColor: Color.fromRGBO(228, 161, 147, 1),
+        primaryColor: const Color.fromRGBO(228, 161, 147, 1),
         secondaryHeaderColor: primary,
 
         scaffoldBackgroundColor: primary,
-        textTheme: const TextTheme(
-          titleSmall: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, color: Colors.white)
+        textTheme: TextTheme(
+          titleSmall: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, color: Colors.white),
         )
       ),
     );

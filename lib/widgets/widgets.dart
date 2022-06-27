@@ -1,3 +1,3 @@
-export 'package:event_on_time/widgets/textWeb.dart';
-export 'package:event_on_time/widgets/formHome.dart';
-export 'package:event_on_time/widgets/ImagesUp.dart';
+export 'package:event_on_time/widgets/textweb.dart';
+export 'package:event_on_time/widgets/formhome.dart';
+export 'package:event_on_time/widgets/images_up.dart';
