@@ -9,10 +9,10 @@ class FormHome extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
-          Texto(texto: 'Codigo de reunión'),
+          Texto(texto: 'Código de reunión'),
           InputFormCs(),
           Texto(
-            texto: 'Codigo de usuario',
+            texto: 'Código de usuario',
             altura: 25,
           ),
           InputFormCs(),

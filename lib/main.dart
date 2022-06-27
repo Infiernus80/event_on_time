@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {     
     Color primary = const Color.fromRGBO(83, 111, 138, 1);
     return MaterialApp(
       title: 'Event on time',
