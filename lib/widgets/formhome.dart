@@ -15,7 +15,7 @@ class FormHome extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Texto(texto: 'Código de reunión'),
+            const Texto(texto: 'Código de reunión',altura: 40,),
             Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30),
                 child: TextFormField(

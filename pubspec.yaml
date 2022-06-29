@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_polygon: ^0.3.0+2
   cool_alert: ^1.1.0
+  modal_bottom_sheet: ^2.1.0
   
 
 dev_dependencies:

@@ -15,8 +15,9 @@ class MyApp extends StatelessWidget {
       routes: {
         HomeScreen.route:(context) => const HomeScreen(),
         InviteScreen.route:(context) => const InviteScreen(),
+        KeeperScreen.route:(context) => const KeeperScreen(),
       },
-      initialRoute: HomeScreen.route,
+      initialRoute: KeeperScreen.route,
       theme: ThemeData(
         useMaterial3: true,
         fontFamily: 'Inter',
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         secondaryHeaderColor: primary,
 
         scaffoldBackgroundColor: primary,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           titleSmall: TextStyle(fontSize: 15,fontWeight: FontWeight.bold, color: Colors.white),
         )
       ),

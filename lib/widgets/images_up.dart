@@ -1,3 +1,4 @@
+import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ImagesUp extends StatelessWidget {
@@ -13,19 +14,18 @@ class ImagesUp extends StatelessWidget {
           children: [
             Stack(
               children: const [
-                Image(
-                  image: AssetImage('assets/images/cordon.png'),
-                  width: 190,
-                  height: 200,
-                  alignment: Alignment.topLeft,
-                ),
+                ImagenShow(
+                    width: 200,
+                    height: 150,
+                    alignment: Alignment.topLeft,
+                    routeImage: 'assets/images/cordon.png'),
                 Padding(
-                  padding: EdgeInsets.only(left: 50),
-                  child: Image(
-                      image: AssetImage('assets/images/Logo.png'),
-                      width: 300,
-                      height: 300,
-                      alignment: Alignment.centerRight),
+                  padding: EdgeInsets.only(left: 50,top: 30),
+                  child: ImagenShow(
+                      width: 240,
+                      height: 240,
+                      alignment: Alignment.centerRight,
+                      routeImage: 'assets/images/logo.png'),
                 ),
               ],
             ),
