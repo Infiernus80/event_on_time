@@ -1,5 +1,6 @@
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class KeeperScreen extends StatelessWidget {
@@ -32,13 +33,24 @@ class KeeperScreen extends StatelessWidget {
                   width: 244,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      String barcodeScanRes =
+                          await FlutterBarcodeScanner.scanBarcode(
+                        '#F6B33E',
+                        'Cancelar',
+                        false,
+                        ScanMode.QR,
+                      );
+
+                      
+
+
                       showCupertinoModalBottomSheet(
                           expand: true,
                           context: context,
                           backgroundColor:
                               const Color.fromRGBO(67, 125, 160, 1),
-                          builder: (context) => const InfoPerson());
+                          builder: (context) => InfoPerson(qr: barcodeScanRes,));
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.amber,
@@ -68,27 +80,32 @@ class KeeperScreen extends StatelessWidget {
 
 class InfoPerson extends StatelessWidget {
   const InfoPerson({
-    Key? key,
+    Key? key, required this.qr,
   }) : super(key: key);
+  final String qr;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
+      
       child: Card(
         color: const Color.fromRGBO(67, 125, 160, 1),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 54, left: 23),
-              child: Row(
-                children: [
-                  Text(
-                    'Nombres:',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor, fontSize: 30),
-                  ),
-                ],
+            FittedBox(
+              fit: BoxFit.cover,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 54, left: 23),
+                child: Row(
+                  children: [
+                    Text(
+                      '$qr\n',
+                      maxLines: 2,
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor, fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
             )
           ],

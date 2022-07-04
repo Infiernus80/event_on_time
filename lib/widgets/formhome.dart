@@ -1,4 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,23 @@ class FormHome extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Texto(texto: 'Código de reunión',altura: 40,),
+            const Texto(
+              texto: 'Código de reunión',
+              altura: 40,
+            ),
             Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30),
                 child: TextFormField(
                   validator: (valor) {
+                    if (valor != "") {
+                      (valor == "12345")
+                          ? ScreenArguments().numeroInviteSet = 1
+                          : (valor == "123456")
+                              ? ScreenArguments().numeroInviteSet = 2
+                              : (valor == "1234567")
+                                  ? ScreenArguments().numeroInviteSet = 3
+                                  : ScreenArguments().numeroInviteSet = 1;
+                    }
                     if (valor == "") {
                       return 'Código de reunión vacio';
                     }
@@ -64,14 +77,14 @@ class FormHome extends StatelessWidget {
                       onPressed: () {
                         if (_keyForm.currentState!.validate()) {
                           Navigator.pushReplacementNamed(
-                              context, InviteScreen.route);
+                              context, InviteScreen.route,
+                              arguments:ScreenArguments().numeroInviteGet);
                         } else {
                           CoolAlert.show(
-                            context: context,
-                            text: "Por favor llena los campos solicitados",
-                            type: CoolAlertType.error,
-                            confirmBtnColor: Colors.amber
-                          );
+                              context: context,
+                              text: "Por favor llena los campos solicitados",
+                              type: CoolAlertType.error,
+                              confirmBtnColor: Colors.amber);
                         }
                       },
                       style: ElevatedButton.styleFrom(
