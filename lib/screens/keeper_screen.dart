@@ -1,3 +1,4 @@
+import 'package:event_on_time/class/person_invite.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -41,6 +42,7 @@ class KeeperScreen extends StatelessWidget {
                         false,
                         ScanMode.QR,
                       );
+                      print(barcodeScanRes);
                       if (barcodeScanRes != '-1') {
                         showModalBottomSheet(
                           context: context,
@@ -50,7 +52,7 @@ class KeeperScreen extends StatelessWidget {
                                   topRight: Radius.circular(30))),
                           backgroundColor:
                               const Color.fromRGBO(67, 125, 160, 1),
-                          builder: (context) => Container(
+                          builder: (context) => SizedBox(
                             height: 500,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -100,6 +102,7 @@ class InfoPerson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<dynamic,dynamic> persona = PersonInvite().personas;
     return SizedBox(
       child: FittedBox(
         fit: BoxFit.fitWidth,
@@ -112,28 +115,30 @@ class InfoPerson extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TextoAMostrar(
-                    txtBase: 'Erick Jonathan Sandoval Reveles',
+                  TextoAMostrar(
+                    txtBase: '${persona['Nombre'][int.parse(qr)]}',
                     txtIdentificador: 'Nombre: ',
                   ),
-                  const TextoAMostrar(
-                    txtBase: '7 ',
+                  TextoAMostrar(
+                    txtBase: '${persona['Acompañantes'][int.parse(qr)]}',
                     txtIdentificador: 'Acompañantes: ',
                   ),
-                  const TextoAMostrar(
-                    txtBase: 'e.jonathansandoval200106@gmail.com',
+                  TextoAMostrar(
+                    txtBase: '${persona['Correo'][int.parse(qr)]}',
                     txtIdentificador: 'Correo: ',
                   ),
+                  
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 94, left: 54),
+                        padding: const EdgeInsets.only(top: 94, left: 50),
                         child: SizedBox(
-                          width: 244,
+                          width: 300,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
                             style: styleForText(),
                             child: const Text(
                               'Aceptar',
@@ -182,7 +187,7 @@ class TextoAMostrar extends StatelessWidget {
             child: Text(
               txtBase,
               style: const TextStyle(
-                  color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
         ],
