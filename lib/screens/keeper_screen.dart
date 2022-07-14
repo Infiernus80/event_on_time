@@ -41,16 +41,29 @@ class KeeperScreen extends StatelessWidget {
                         false,
                         ScanMode.QR,
                       );
-
-                      
-
-
-                      showCupertinoModalBottomSheet(
-                          expand: true,
+                      if (barcodeScanRes != '-1') {
+                        showModalBottomSheet(
                           context: context,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
                           backgroundColor:
                               const Color.fromRGBO(67, 125, 160, 1),
-                          builder: (context) => InfoPerson(qr: barcodeScanRes,));
+                          builder: (context) => Container(
+                            height: 500,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                InfoPerson(
+                                  qr: barcodeScanRes,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.amber,
@@ -80,37 +93,105 @@ class KeeperScreen extends StatelessWidget {
 
 class InfoPerson extends StatelessWidget {
   const InfoPerson({
-    Key? key, required this.qr,
+    Key? key,
+    required this.qr,
   }) : super(key: key);
   final String qr;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      
-      child: Card(
-        color: const Color.fromRGBO(67, 125, 160, 1),
-        child: Column(
-          children: [
-            FittedBox(
-              fit: BoxFit.cover,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 54, left: 23),
-                child: Row(
-                  children: [
-                    Text(
-                      '$qr\n',
-                      maxLines: 2,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 12),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 54, horizontal: 23),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const TextoAMostrar(
+                    txtBase: 'Erick Jonathan Sandoval Reveles',
+                    txtIdentificador: 'Nombre: ',
+                  ),
+                  const TextoAMostrar(
+                    txtBase: '7 ',
+                    txtIdentificador: 'Acompañantes: ',
+                  ),
+                  const TextoAMostrar(
+                    txtBase: 'e.jonathansandoval200106@gmail.com',
+                    txtIdentificador: 'Correo: ',
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 94, left: 54),
+                        child: SizedBox(
+                          width: 244,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: styleForText(),
+                            child: const Text(
+                              'Aceptar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+
+  ButtonStyle styleForText() {
+    return ElevatedButton.styleFrom(
+        primary: Colors.amber,
+        textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+  }
+}
+
+class TextoAMostrar extends StatelessWidget {
+  const TextoAMostrar({
+    Key? key,
+    required this.txtBase,
+    required this.txtIdentificador,
+  }) : super(key: key);
+
+  final String txtBase, txtIdentificador;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            txtIdentificador,
+            style: styleText(),
+          ),
+          SizedBox(
+            child: Text(
+              txtBase,
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextStyle styleText() => const TextStyle(
+      color: Color.fromRGBO(228, 161, 147, 1),
+      fontSize: 20,
+      fontWeight: FontWeight.bold);
 }

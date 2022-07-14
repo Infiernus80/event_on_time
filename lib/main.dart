@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           InviteScreen.route:(context) => const InviteScreen(),
           KeeperScreen.route:(context) => const KeeperScreen(),
         },
-        initialRoute: HomeScreen.route,
+        initialRoute: KeeperScreen.route,
         theme: ThemeData(
           useMaterial3: true,
           fontFamily: 'Inter',
