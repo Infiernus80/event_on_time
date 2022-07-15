@@ -2,7 +2,6 @@ import 'package:event_on_time/class/person_invite.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class KeeperScreen extends StatelessWidget {
   static String route = "KeeperScreen";
@@ -42,7 +41,7 @@ class KeeperScreen extends StatelessWidget {
                         false,
                         ScanMode.QR,
                       );
-                      print(barcodeScanRes);
+                      // print(barcodeScanRes);
                       if (barcodeScanRes != '-1') {
                         showModalBottomSheet(
                           context: context,

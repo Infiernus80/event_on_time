@@ -37,6 +37,7 @@ dependencies:
   flutter_polygon: ^0.3.0+2
   modal_bottom_sheet: ^2.1.0
   provider: ^6.0.3
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

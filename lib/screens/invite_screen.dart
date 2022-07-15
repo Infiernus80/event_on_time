@@ -1,6 +1,7 @@
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../class/invite_screen_class.dart';
 
@@ -28,90 +29,105 @@ class InviteScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Column(
-                        children: const [
-                          NewText(
+                        children: [
+                          const NewText(
                             text: 'Hola Alex',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: '21 de junio',
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: '2022',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'LOREM',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             top: 60,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'lorem',
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                             top: 16,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'lorem',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          Divisor(),
-                          NewText(
+                          const Divisor(),
+                          const NewText(
                             text: 'lorem',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'lorem',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          BottonHexagon(),
-                          Divisor(),
-                          NewText(
+                          const BottonHexagon(),
+                          const Divisor(),
+                          const NewText(
                             text: 'lorem',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'lorem',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          BottonHexagon(),
-                          Divisor(),
-                          NewText(
+                          const BottonHexagon(),
+                          const Divisor(),
+                          const NewText(
                             text: 'lorem',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          NewText(
+                          const NewText(
                             text: 'lorem',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          Divisor(top: 115,),
-                          ImagenShow(width: 280, height: 187, alignment: Alignment.center, routeImage: 'assets/images/image3.png'),
-                          Divisor(top: 50,),
-                          ImagenShow(width: 278, height: 278, alignment: Alignment.center, routeImage: 'assets/images/image2.png'),
+                          const Divisor(
+                            top: 115,
+                          ),
+                          const ImagenShow(
+                              width: 280,
+                              height: 187,
+                              alignment: Alignment.center,
+                              routeImage: 'assets/images/image3.png'),
+                          const Divisor(
+                            
+                          ),
+                          // Aqui se crea el codigo qr desde el back end
+                          QrImage(
+                            data: '2',
+                            version: QrVersions.auto,
+                            size: 300,
+                            foregroundColor:Theme.of(context).primaryColor,
+                            // backgroundColor: Colors.white,
+                          )
                         ],
                       ),
                     ],
@@ -135,7 +151,6 @@ class InviteScreen extends StatelessWidget {
     );
   }
 }
-
 
 //Widget para agregar texto
 class NewText extends StatelessWidget {
@@ -206,21 +221,17 @@ class Images extends StatelessWidget {
 //Widget para dividir los campos
 class Divisor extends StatelessWidget {
   const Divisor({
-    Key? key, this.top = 0,
+    Key? key,
+    this.top = 0,
   }) : super(key: key);
   final double? top;
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: EdgeInsets.only(top: top != 0?top!:12),
-      child: const SizedBox(
-        width: 302,
-        height: 87,
-        child: Divider(
-          color: Colors.white,
-        ),
-      ),
-    );
+    return const ImagenShow(
+        width: 300,
+        height: 300,
+        alignment: Alignment.center,
+        routeImage: 'assets/images/6.png');
   }
 }
