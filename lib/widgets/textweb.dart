@@ -1,6 +1,6 @@
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polygon/flutter_polygon.dart';
+
 
 class TextWeb extends StatelessWidget {
   const TextWeb({Key? key}) : super(key: key);

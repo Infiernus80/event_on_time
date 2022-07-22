@@ -1,7 +1,8 @@
 import 'package:cool_alert/cool_alert.dart';
-import 'package:event_on_time/class/invite_screen_class.dart';
-import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../class/validations.dart';
 
 class FormHome extends StatelessWidget {
   FormHome({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class FormHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Validacion val = Provider.of<Validacion>(context);
     return Expanded(
       child: Form(
         key: _keyForm,
@@ -21,50 +23,31 @@ class FormHome extends StatelessWidget {
               altura: 40,
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: TextFormField(
-                  validator: (valor) {
-                    if (valor != "") {
-                      (valor == "12345")
-                          ? ScreenArguments().numeroInviteSet = 1
-                          : (valor == "123456")
-                              ? ScreenArguments().numeroInviteSet = 2
-                              : (valor == "1234567")
-                                  ? ScreenArguments().numeroInviteSet = 3
-                                  : ScreenArguments().numeroInviteSet = 1;
-                    }
-                    if (valor == "") {
-                      return 'Código de reunión vacio';
-                    }
-                    if (valor!.length < 5 || valor.length > 15) {
-                      return 'Código de reunión no es valido';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.black),
-                  decoration: decoracionInput(),
-                )),
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: TextFormField(
+                validator: (valor) {
+                  return val.validacionCodigoReunion(valor!);
+                },
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                decoration: decoracionInput(),
+              ),
+            ),
             const Texto(
               texto: 'Código de usuario',
               altura: 25,
             ),
             Padding(
-                padding: const EdgeInsets.only(left: 30, right: 30),
-                child: TextFormField(
-                  validator: (valor) {
-                    if (valor == "") {
-                      return 'Código de usuario vacio';
-                    }
-                    if (valor!.length < 5 || valor.length > 15) {
-                      return 'Código de usuario no es valido';
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.number,
-                  style: const TextStyle(color: Colors.black),
-                  decoration: decoracionInput(),
-                )),
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: TextFormField(
+                validator: (valor) {
+                  return val.validacionCodigoUsuario(valor!).toString();
+                },
+                keyboardType: TextInputType.number,
+                style: const TextStyle(color: Colors.black),
+                decoration: decoracionInput(),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -76,9 +59,11 @@ class FormHome extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_keyForm.currentState!.validate()) {
-                          Navigator.pushReplacementNamed(
-                              context, InviteScreen.route,
-                              arguments:ScreenArguments().numeroInviteGet);
+                          // Navigator.pushReplacementNamed(
+                          //     context, InviteScreen.route,
+                          //     arguments:ScreenArguments().numeroInviteGet);
+                          // val.validacionScreens();
+                          debugPrint('Si funciona');
                         } else {
                           CoolAlert.show(
                               context: context,

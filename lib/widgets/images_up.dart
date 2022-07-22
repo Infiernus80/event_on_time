@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ImagesUp extends StatelessWidget {
   const ImagesUp({Key? key}) : super(key: key);
@@ -15,19 +16,17 @@ class ImagesUp extends StatelessWidget {
           children: [
             Stack(
               children: [
-                
                 Padding(
-                  padding: const EdgeInsets.only(left: 50,top: 50),
+                  padding: EdgeInsets.only(left: 12.h, top: 6.h),
                   child: BounceInDown(
-                    duration: Duration(milliseconds: 2000),
-                    child: const ImagenShow(
-                        width: 240,
-                        height: 240,
+                    duration: const Duration(milliseconds: 2000),
+                    child: ImagenShow(
+                        width: Adaptive.w(50),
+                        height: 30.h,
                         alignment: Alignment.centerRight,
                         routeImage: 'assets/images/logo.png'),
                   ),
                 ),
-                
                 const ImagenShow(
                     width: 200,
                     height: 150,
