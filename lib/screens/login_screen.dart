@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/inputs_providers.dart';
 import '../providers/switch_provider.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -10,6 +11,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SwitchProvider switchP = Provider.of<SwitchProvider>(context);
+    InputProvider inputs = Provider.of<InputProvider>(context);
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -100,29 +102,50 @@ class LoginScreen extends StatelessWidget {
                                       bottom: BorderSide(
                                           color: Colors.grey.shade100))),
                               child: TextField(
+                                controller: inputs.campo1,
+                                keyboardType: (switchP.isInvitateGet == false)
+                                    ? TextInputType.number
+                                    : TextInputType.emailAddress,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    // hintText: "Código de reunión",
-                                    label: Text(
-                                      "Código de reunión",
-                                      style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    ),
+                                    label: (switchP.isInvitateGet == false)
+                                        ? Txt(
+                                            txt: 'Código de reunión',
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 16)
+                                        : Txt(
+                                            txt: 'Correo electronico',
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 16),
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                               ),
                             ),
+
+                            //Contenedor Codigo de usuario y contraseña
                             Container(
                               padding: const EdgeInsets.all(8.0),
                               child: TextField(
+                                controller: inputs.campo2,
+                                keyboardType: (switchP.isInvitateGet == false)
+                                    ? TextInputType.number
+                                    : TextInputType.text,
+                                obscureText: switchP.isInvitateGet,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    label: Text("Código de usuario",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .primaryColor)),
-                                    // hintText: "Código de usuario",
+                                    label: (switchP.isInvitateGet == false)
+                                        ? Txt(
+                                            txt: 'Código de usuario',
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 16)
+                                        : Txt(
+                                            txt: 'Contraseña',
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            size: 16),
                                     hintStyle:
                                         TextStyle(color: Colors.grey[400])),
                               ),
@@ -146,8 +169,8 @@ class LoginScreen extends StatelessWidget {
                               activeColor: Colors.amber,
                               onChanged: (value) {
                                 switchP.isInvitateSet();
-                                debugPrint(value.toString());
-                                debugPrint('Provider: ${switchP.isNotifiable.toString()}');
+                                debugPrint('${switchP.isInvitateGet}');
+                                // debugPrint('$value');
                               },
                               value: switchP.isInvitateGet,
                             ),
@@ -160,13 +183,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Container(
                         height: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: const LinearGradient(colors: [
-                              Color.fromRGBO(255, 193, 7, 1),
-                              // Color.fromRGBO(228, 161, 147, 1),
-                              Color.fromRGBO(255, 193, 7, .6),
-                            ])),
+                        decoration: decoration(),
                         child: Center(
                           child: SizedBox(
                             width: 500,
@@ -175,14 +192,20 @@ class LoginScreen extends StatelessWidget {
                               style: const ButtonStyle(
                                 splashFactory: NoSplash.splashFactory,
                               ),
-                              onPressed: () {},
-                              child: const Text(
-                                "Iniciar sesión",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
+                              onPressed: () {
+                                inputs.validations(context);
+                              },
+                              child: (switchP.isInvitateGet == false)
+                                  ? const Txt(
+                                      txt: 'Ingresar',
+                                      color: Colors.white,
+                                      size: 17,
+                                    )
+                                  : const Txt(
+                                      txt: 'Iniciar sesión',
+                                      color: Colors.white,
+                                      size: 17,
+                                    ),
                             ),
                           ),
                         ),
@@ -190,16 +213,44 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 70,
                       ),
-                      // const Text(
-                      //   "Forgot Password?",
-                      //   style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
-                      // ),
                     ],
                   ),
                 )
               ],
             ),
           )),
+    );
+  }
+
+  BoxDecoration decoration() {
+    return BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        gradient: const LinearGradient(colors: [
+          Color.fromRGBO(255, 193, 7, 1),
+          // Color.fromRGBO(228, 161, 147, 1),
+          Color.fromRGBO(255, 193, 7, .6),
+        ]));
+  }
+}
+
+class Txt extends StatelessWidget {
+  const Txt({
+    Key? key,
+    required this.txt,
+    required this.color,
+    required this.size,
+  }) : super(key: key);
+
+  final String txt;
+  final Color color;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      txt,
+      style:
+          TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: size),
     );
   }
 }

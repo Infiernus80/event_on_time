@@ -9,5 +9,4 @@ class SwitchProvider with ChangeNotifier{
     isNotifiable = !isNotifiable;
     notifyListeners();
   }
-
 }
