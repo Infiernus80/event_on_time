@@ -1,21 +1,21 @@
 import 'package:cool_alert/cool_alert.dart';
 import 'package:event_on_time/providers/switch_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:validated/validated.dart' as validate;
 
 class InputProvider with ChangeNotifier {
   final campo1 = TextEditingController();
   final campo2 = TextEditingController();
 
-  final SwitchProvider switchP = SwitchProvider();
-
-  validations(BuildContext context) {
+  validations(BuildContext context,bool switchP) {
     String correo = '';
     String contra = '';
     int cReunion = 0;
     int cUsuario = 0;
 
-    if (switchP.isInvitateGet == false) {
+    if (!switchP) {
+      //Los datos del controlador se ponen en sus respectivas variables
       cReunion = (campo1.text.isEmpty) ? 0 : int.parse(campo1.text);
       cUsuario = (campo2.text.isEmpty) ? 0 : int.parse(campo2.text);
     } else {
@@ -30,9 +30,8 @@ class InputProvider with ChangeNotifier {
     } else if (cReunion != 0 && cUsuario != 0) {
       debugPrint('Esto es una invitacion');
     } else {
-      if (switchP.isInvitateGet == false) {
-        error1(context);
-      }
+      if (!switchP) error1(context);
+      else error2(context);
     }
 
     notifyListeners();
@@ -41,7 +40,15 @@ class InputProvider with ChangeNotifier {
   error1(BuildContext context) {
     CoolAlert.show(
         context: context,
-        text: "Credenciales no validas,intenta de nuevo",
+        text: "Esta invitación no es valida ",
+        type: CoolAlertType.error,
+        confirmBtnColor: Colors.amber);
+  }
+
+  error2(BuildContext context) {
+    CoolAlert.show(
+        context: context,
+        text: "Credenciales no validas, intenta de nuevo",
         type: CoolAlertType.error,
         confirmBtnColor: Colors.amber);
   }

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,55 +27,40 @@ class LoginScreen extends StatelessWidget {
                           fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
+
+                      //Contenedor para la imagen superiro izquierda
                       Positioned(
                         // left: 0,
                         width: 200,
                         height: 150,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/cordon.png'))),
+                        child: BounceInDown(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/cordon.png'))),
+                          ),
                         ),
                       ),
-                      // Positioned(
-                      //   left: 140,
-                      //   width: 80,
-                      //   height: 150,
-                      //   child: Container(
-                      //     decoration: const BoxDecoration(
-                      //         image: DecorationImage(
-                      //             image:
-                      //                 AssetImage('assets/images/light-2.png'))),
-                      //   ),
-                      // ),
-                      // Positioned(
-                      //   right: 10,
-                      //   top: 20,
-                      //   width: 150,
-                      //   height: 150,
-                      //   child: Container(
-                      //     decoration: const BoxDecoration(
-                      //       image: DecorationImage(
-                      //         image: AssetImage('assets/images/Conos.png'),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+
+                      //Contenedor para ellogo 
                       Positioned(
                         right: 95,
                         top: 50,
                         width: 200,
                         height: 250,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/logo.png'),
+                        child: BounceInDown(
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/logo.png'),
+                              ),
                             ),
+                            // margin: const EdgeInsets.only(top: 50),
                           ),
-                          // margin: const EdgeInsets.only(top: 50),
                         ),
                       ),
+                    
                     ],
                   ),
                 ),
@@ -82,130 +68,136 @@ class LoginScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Color.fromRGBO(83, 111, 138, .9),
-                                  blurRadius: 20.0,
-                                  offset: Offset(0, 10))
-                            ]),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: Colors.grey.shade100))),
-                              child: TextField(
-                                controller: inputs.campo1,
-                                keyboardType: (switchP.isInvitateGet == false)
-                                    ? TextInputType.number
-                                    : TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    label: (switchP.isInvitateGet == false)
-                                        ? Txt(
-                                            txt: 'Código de reunión',
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            size: 16)
-                                        : Txt(
-                                            txt: 'Correo electronico',
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            size: 16),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                      BounceInDown(
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Color.fromRGBO(83, 111, 138, .9),
+                                    blurRadius: 20.0,
+                                    offset: Offset(0, 10))
+                              ]),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade100))),
+                                child: TextField(
+                                  controller: inputs.campo1,
+                                  keyboardType: (switchP.isInvitateGet == false)
+                                      ? TextInputType.number
+                                      : TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      label: (switchP.isInvitateGet == false)
+                                          ? Txt(
+                                              txt: 'Código de reunión',
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              size: 16)
+                                          : Txt(
+                                              txt: 'Correo electronico',
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              size: 16),
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
-
-                            //Contenedor Codigo de usuario y contraseña
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextField(
-                                controller: inputs.campo2,
-                                keyboardType: (switchP.isInvitateGet == false)
-                                    ? TextInputType.number
-                                    : TextInputType.text,
-                                obscureText: switchP.isInvitateGet,
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    label: (switchP.isInvitateGet == false)
-                                        ? Txt(
-                                            txt: 'Código de usuario',
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            size: 16)
-                                        : Txt(
-                                            txt: 'Contraseña',
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            size: 16),
-                                    hintStyle:
-                                        TextStyle(color: Colors.grey[400])),
+                      
+                              //Contenedor Codigo de usuario y contraseña
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextField(
+                                  controller: inputs.campo2,
+                                  keyboardType: (switchP.isInvitateGet == false)
+                                      ? TextInputType.number
+                                      : TextInputType.text,
+                                  obscureText: switchP.isInvitateGet,
+                                  decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      label: (switchP.isInvitateGet == false)
+                                          ? Txt(
+                                              txt: 'Código de usuario',
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              size: 16)
+                                          : Txt(
+                                              txt: 'Contraseña',
+                                              color:
+                                                  Theme.of(context).primaryColor,
+                                              size: 16),
+                                      hintStyle:
+                                          TextStyle(color: Colors.grey[400])),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 30,
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const Text(
-                              'Invitado',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Switch(
-                              activeColor: Colors.amber,
-                              onChanged: (value) {
-                                switchP.isInvitateSet();
-                                debugPrint('${switchP.isInvitateGet}');
-                                // debugPrint('$value');
-                              },
-                              value: switchP.isInvitateGet,
-                            ),
-                            const Text(
-                              'Organizador',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                      BounceInDown(
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const Text(
+                                'Invitado',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Switch(
+                                activeColor: Colors.amber,
+                                onChanged: (value) {
+                                  switchP.isInvitateSet();
+                                  debugPrint('${switchP.isInvitateGet}');
+                                  // debugPrint('$value');
+                                },
+                                value: switchP.isInvitateGet,
+                              ),
+                              const Text(
+                                'Organizador',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        height: 50,
-                        decoration: decoration(),
-                        child: Center(
-                          child: SizedBox(
-                            width: 500,
-                            height: 50,
-                            child: TextButton(
-                              style: const ButtonStyle(
-                                splashFactory: NoSplash.splashFactory,
+                      BounceInDown(
+                        child: Container(
+                          height: 50,
+                          decoration: decoration(),
+                          child: Center(
+                            child: SizedBox(
+                              width: 500,
+                              height: 50,
+                              child: TextButton(
+                                style: const ButtonStyle(
+                                  splashFactory: NoSplash.splashFactory,
+                                ),
+                                onPressed: () {
+                                  inputs.validations(context,switchP.isInvitateGet);
+                                },
+                                child: (switchP.isInvitateGet == false)
+                                    ? const Txt(
+                                        txt: 'Ingresar',
+                                        color: Colors.white,
+                                        size: 17,
+                                      )
+                                    : const Txt(
+                                        txt: 'Iniciar sesión',
+                                        color: Colors.white,
+                                        size: 17,
+                                      ),
                               ),
-                              onPressed: () {
-                                inputs.validations(context);
-                              },
-                              child: (switchP.isInvitateGet == false)
-                                  ? const Txt(
-                                      txt: 'Ingresar',
-                                      color: Colors.white,
-                                      size: 17,
-                                    )
-                                  : const Txt(
-                                      txt: 'Iniciar sesión',
-                                      color: Colors.white,
-                                      size: 17,
-                                    ),
                             ),
                           ),
                         ),
