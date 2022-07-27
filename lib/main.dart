@@ -3,6 +3,7 @@ import 'package:event_on_time/class/validations.dart';
 import 'package:event_on_time/providers/inputs_providers.dart';
 import 'package:event_on_time/providers/switch_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
+import 'package:event_on_time/services/auth_event_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => InputProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthEventService(),
           ),
         ],
         child: MaterialApp(

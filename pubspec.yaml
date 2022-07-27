@@ -35,6 +35,7 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   flutter_launcher_icons: ^0.9.3
   flutter_polygon: ^0.3.0+2
+  http: ^0.13.4
   modal_bottom_sheet: ^2.1.0
   provider: ^6.0.3
   qr_flutter: ^4.0.0

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/inputs_providers.dart';
 import '../providers/switch_provider.dart';
+import '../services/auth_event_service.dart';
 
 class LoginScreen extends StatelessWidget {
   static String route = 'LoginScreen';
@@ -13,6 +14,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SwitchProvider switchP = Provider.of<SwitchProvider>(context);
     InputProvider inputs = Provider.of<InputProvider>(context);
+    AuthEventService service = Provider.of<AuthEventService>(context);
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -186,7 +188,8 @@ class LoginScreen extends StatelessWidget {
                                   splashFactory: NoSplash.splashFactory,
                                 ),
                                 onPressed: () {
-                                  inputs.validations(context,switchP.isInvitateGet);
+                                  service.authEvent('7935', '9173');
+                                  // inputs.validations(context,switchP.isInvitateGet);
                                 },
                                 child: (switchP.isInvitateGet == false)
                                     ? const Txt(
@@ -204,9 +207,9 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 70,
-                      ),
+                      // const SizedBox(
+                      //   height: 70,
+                      // ),
                     ],
                   ),
                 )

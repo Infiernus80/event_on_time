@@ -1,0 +1,1 @@
+export 'package:event_on_time/models/auth_model.dart';
