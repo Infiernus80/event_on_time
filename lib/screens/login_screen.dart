@@ -158,6 +158,8 @@ class LoginScreen extends StatelessWidget {
                                 activeColor: Colors.amber,
                                 onChanged: (value) {
                                   switchP.isInvitateSet();
+                                  inputs.campo1.clear();
+                                  inputs.campo2.clear();
                                   debugPrint('${switchP.isInvitateGet}');
                                   // debugPrint('$value');
                                 },

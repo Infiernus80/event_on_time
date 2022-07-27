@@ -1,7 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
-import 'package:event_on_time/providers/switch_provider.dart';
+import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:validated/validated.dart' as validate;
 
 class InputProvider with ChangeNotifier {
@@ -28,7 +27,7 @@ class InputProvider with ChangeNotifier {
         debugPrint('Esto es una cuenta');
       }
     } else if (cReunion != 0 && cUsuario != 0) {
-      debugPrint('Esto es una invitacion');
+      Navigator.pushReplacementNamed(context, InviteScreen.route);
     } else {
       if (!switchP) error1(context);
       else error2(context);
