@@ -1,5 +1,6 @@
 import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/class/validations.dart';
+import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/providers/inputs_providers.dart';
 import 'package:event_on_time/providers/switch_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => InputProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthEventProvider(),
           ),
         ],
         child: MaterialApp(

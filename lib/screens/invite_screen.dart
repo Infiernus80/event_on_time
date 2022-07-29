@@ -1,5 +1,6 @@
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -12,6 +13,10 @@ class InviteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arg = Provider.of<ScreenArguments>(context);
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    // Map<String,dynamic> map = args;
+    debugPrint('$args');
+    // 
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -30,14 +35,15 @@ class InviteScreen extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          const NewText(
-                            text: 'Hola Alex',
+                          NewText(
+                            text: args['name'],
+                            // text: 'hola',
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          const NewText(
-                            text: '21 de junio',
+                          NewText(
+                            text: DateFormat.MMMMd().format(DateTime.parse(args['dateStart'])),
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

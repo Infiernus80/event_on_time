@@ -1,4 +1,5 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:validated/validated.dart' as validate;
@@ -7,7 +8,9 @@ class InputProvider with ChangeNotifier {
   final campo1 = TextEditingController();
   final campo2 = TextEditingController();
 
-  validations(BuildContext context,bool switchP) {
+  AuthEventProvider event = AuthEventProvider();
+
+  validations(BuildContext context, bool switchP) {
     String correo = '';
     String contra = '';
     int cReunion = 0;
@@ -27,10 +30,20 @@ class InputProvider with ChangeNotifier {
         debugPrint('Esto es una cuenta');
       }
     } else if (cReunion != 0 && cUsuario != 0) {
-      Navigator.pushReplacementNamed(context, InviteScreen.route);
+      event.validar();
+      Future.delayed(const Duration(seconds: 2), () {
+        if (event.isData) {
+          Map<String,dynamic> map = event.mapaString();
+          Navigator.pushReplacementNamed(context, InviteScreen.route,arguments: map);
+        } else {
+          debugPrint('Se tardo en responder');
+        }
+      });
     } else {
-      if (!switchP) error1(context);
-      else error2(context);
+      if (!switchP)
+        error1(context);
+      else
+        error2(context);
     }
 
     notifyListeners();
