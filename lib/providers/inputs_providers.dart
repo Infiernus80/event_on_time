@@ -40,10 +40,11 @@ class InputProvider with ChangeNotifier {
         }
       });
     } else {
-      if (!switchP)
+      if (!switchP) {
         error1(context);
-      else
+      } else {
         error2(context);
+      }
     }
 
     notifyListeners();

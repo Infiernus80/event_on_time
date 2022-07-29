@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:event_on_time/models/auth_event_class.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

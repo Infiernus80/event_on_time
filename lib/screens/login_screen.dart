@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +13,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SwitchProvider switchP = Provider.of<SwitchProvider>(context);
     InputProvider inputs = Provider.of<InputProvider>(context);
-    AuthEventProvider auth = Provider.of<AuthEventProvider>(context);
+    // AuthEventProvider auth = Provider.of<AuthEventProvider>(context);
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
