@@ -1,7 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../providers/inputs_providers.dart';
 import '../providers/switch_provider.dart';
 
@@ -28,7 +27,6 @@ class LoginScreen extends StatelessWidget {
                           fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
-
                       //Contenedor para la imagen superiro izquierda
                       Positioned(
                         // left: 0,
@@ -38,13 +36,13 @@ class LoginScreen extends StatelessWidget {
                           child: Container(
                             decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/cordon.png'))),
+                                    image: AssetImage(
+                                        'assets/images/cordon.png'))),
                           ),
                         ),
                       ),
 
-                      //Contenedor para ellogo 
+                      //Contenedor para ellogo
                       Positioned(
                         right: 95,
                         top: 50,
@@ -61,7 +59,6 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    
                     ],
                   ),
                 ),
@@ -99,19 +96,19 @@ class LoginScreen extends StatelessWidget {
                                       label: (switchP.isInvitateGet == false)
                                           ? Txt(
                                               txt: 'Código de reunión',
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               size: 16)
                                           : Txt(
                                               txt: 'Correo electronico',
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               size: 16),
                                       hintStyle:
                                           TextStyle(color: Colors.grey[400])),
                                 ),
                               ),
-                      
+
                               //Contenedor Codigo de usuario y contraseña
                               Container(
                                 padding: const EdgeInsets.all(8.0),
@@ -126,13 +123,13 @@ class LoginScreen extends StatelessWidget {
                                       label: (switchP.isInvitateGet == false)
                                           ? Txt(
                                               txt: 'Código de usuario',
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               size: 16)
                                           : Txt(
                                               txt: 'Contraseña',
-                                              color:
-                                                  Theme.of(context).primaryColor,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               size: 16),
                                       hintStyle:
                                           TextStyle(color: Colors.grey[400])),
@@ -190,7 +187,8 @@ class LoginScreen extends StatelessWidget {
                                   // auth.validar();
                                   // Map<String,dynamic> map = auth.mapaString();
                                   // debugPrint('${map['name']}');
-                                  inputs.validations(context,switchP.isInvitateGet);
+                                  inputs.validations(
+                                      context, switchP.isInvitateGet);
                                 },
                                 child: (switchP.isInvitateGet == false)
                                     ? const Txt(

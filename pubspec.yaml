@@ -36,10 +36,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.3
   flutter_polygon: ^0.3.0+2
   http: ^0.13.4
-<<<<<<< HEAD
   intl: ^0.17.0
-=======
->>>>>>> f760f80dc3b5e97bcf862fdba1d4ff7e9ff3d502
   modal_bottom_sheet: ^2.1.0
   provider: ^6.0.3
   qr_flutter: ^4.0.0
