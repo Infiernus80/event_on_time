@@ -16,8 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color primary = const Color.fromRGBO(83, 111, 138, 1);
-    return ResponsiveSizer(
-      builder: (context, orientation, screenType) {
+    return ResponsiveSizer(builder: (context, orientation, screenType) {
       return MultiProvider(
         providers: [
           ChangeNotifierProvider(
@@ -36,30 +35,32 @@ class MyApp extends StatelessWidget {
             create: (context) => AuthEventProvider(),
           ),
         ],
-        child: MaterialApp(
-          title: 'Event on time',
-          debugShowCheckedModeBanner: false,
-          routes: {
-            HomeScreen.route: (context) => const HomeScreen(),
-            LoginScreen.route: (context) => const LoginScreen(),
-            InviteScreen.route: (context) => const InviteScreen(),
-            KeeperScreen.route: (context) => const KeeperScreen(),
-          },
-          initialRoute: LoginScreen.route,
-          theme: ThemeData(
-              useMaterial3: true,
-              fontFamily: 'Inter',
-              // Color de las letras
-              primaryColor: const Color.fromRGBO(228, 161, 147, 1),
-              secondaryHeaderColor: primary,
-              scaffoldBackgroundColor: primary,
-              textTheme: const TextTheme(
-                titleSmall: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
-        ),
+        child: ResponsiveSizer(builder: (context, orientation, screenType) {
+          return MaterialApp(
+            title: 'Event on time',
+            debugShowCheckedModeBanner: false,
+            routes: {
+              HomeScreen.route: (context) => const HomeScreen(),
+              LoginScreen.route: (context) => const LoginScreen(),
+              InviteScreen.route: (context) => const InviteScreen(),
+              KeeperScreen.route: (context) => const KeeperScreen(),
+            },
+            initialRoute: LoginScreen.route,
+            theme: ThemeData(
+                useMaterial3: true,
+                fontFamily: 'Inter',
+                // Color de las letras
+                primaryColor: const Color.fromRGBO(228, 161, 147, 1),
+                secondaryHeaderColor: primary,
+                scaffoldBackgroundColor: primary,
+                textTheme: const TextTheme(
+                  titleSmall: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                )),
+          );
+        }),
       );
     });
   }

@@ -1,10 +1,10 @@
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
+// import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-
-import '../class/invite_screen_class.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InviteScreen extends StatelessWidget {
   static String route = "InviteScreen";
@@ -12,144 +12,39 @@ class InviteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arg = Provider.of<ScreenArguments>(context);
+    // final arg = Provider.of<ScreenArguments>(context);
     final args = ModalRoute.of(context)!.settings.arguments as Map;
-    // Map<String,dynamic> map = args;
     debugPrint('$args');
-    // 
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Stack(
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      Images(arg: arg),
-                    ],
+                  StackPrincipal(args: args),
+                  StackNF(args: args),
+                  StackDescription(args: args),
+                  //Divisor para la ubicacion
+                  const StackImagenDivisora(
+                    img: 'assets/images/Locate.json',
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          NewText(
-                            text: args['name'],
-                            // text: 'hola',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          NewText(
-                            text: DateFormat.MMMMd().format(DateTime.parse(args['dateStart'])),
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const NewText(
-                            text: '2022',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const NewText(
-                            text: 'LOREM',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            top: 60,
-                          ),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            top: 16,
-                          ),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const Divisor(),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const BottonHexagon(),
-                          const Divisor(),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const BottonHexagon(),
-                          const Divisor(),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const NewText(
-                            text: 'lorem',
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          const Divisor(
-                            top: 115,
-                          ),
-                          const ImagenShow(
-                              width: 280,
-                              height: 187,
-                              alignment: Alignment.center,
-                              routeImage: 'assets/images/image3.png'),
-                          const Divisor(
-                            
-                          ),
-                          // Aqui se crea el codigo qr desde el back end
-                          QrImage(
-                            data: '2',
-                            version: QrVersions.auto,
-                            size: 300,
-                            foregroundColor:Theme.of(context).primaryColor,
-                            // backgroundColor: Colors.white,
-                          )
-                        ],
-                      ),
-                    ],
-                  )
+                  //Contenedor para la ubicacion
+                  StackCategorias(
+                    txt1: args['address'],
+                    txt2: args['dressCode'],
+                  ),
+                  //Divisor para la comida
+                  const StackImagenDivisora(
+                    img: 'assets/images/food.json',
+                  ),
+                  StackCategorias(
+                    txt1: args['services'][0]['name'],
+                    txt2: args['services'][0]['description'],
+                  ),
                 ],
-              ),
-              const Padding(
-                padding: EdgeInsets.only(left: 110, top: 180),
-                child: Text(
-                  'LOREM',
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
+              )
             ],
           ),
         ),
@@ -158,86 +53,257 @@ class InviteScreen extends StatelessWidget {
   }
 }
 
-//Widget para agregar texto
-class NewText extends StatelessWidget {
-  const NewText({
+class StackCategorias extends StatelessWidget {
+  const StackCategorias({
     Key? key,
-    required this.text,
-    required this.fontSize,
-    required this.fontWeight,
-    required this.color,
-    this.top = 13,
+    // required this.args,
+    required this.txt1,
+    required this.txt2,
   }) : super(key: key);
-  final String text;
-  final double fontSize;
-  final FontWeight fontWeight;
-  final Color color;
-  final double? top;
+
+  // final Map args;
+  final String txt1, txt2;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: top != 0 ? top! : 13),
-      child: Text(
-        text,
-        style:
-            TextStyle(fontSize: fontSize, fontWeight: fontWeight, color: color),
-      ),
-    );
-  }
-}
-
-// Widgets para el cambio de imagenes
-class Images extends StatelessWidget {
-  const Images({
-    Key? key,
-    required this.arg,
-  }) : super(key: key);
-
-  final ScreenArguments arg;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
-        (arg.numeroInviteGet == 1)
-            ? const ImagenShow(
-                width: 360,
-                height: 421,
-                alignment: Alignment.center,
-                routeImage: 'assets/images/Invite1.png')
-            : (arg.numeroInviteGet == 2)
-                ? const ImagenShow(
-                    width: 360,
-                    height: 421,
-                    alignment: Alignment.center,
-                    routeImage: 'assets/images/Invite2.png')
-                : (arg.numeroInviteGet == 3)
-                    ? const ImagenShow(
-                        width: 360,
-                        height: 421,
-                        alignment: Alignment.center,
-                        routeImage: 'assets/images/Invite3.png')
-                    : const CircularProgressIndicator()
+        Column(
+          children: [
+            //CONTENEDOR PARA LA DIRECCION
+            Container(
+              // color: Colors.black,
+              margin: EdgeInsets.only(top: 3.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // color: Colors.red,
+                    child: Text(
+                      txt1,
+                      style: estiloTexto(20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            //CONTAINER PARA EL CODIGO POSTAL
+            Container(
+              // color: Colors.black,
+              // margin: EdgeInsets.only(top: 1.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // color: Colors.red,
+                    child: Text(
+                      txt2,
+                      style: estiloTexto(20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            //CONTENEDOR PARA BOTON
+            Container(
+              // color: Colors.black,
+              // margin: EdgeInsets.only(top: 1.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(child: const BottonHexagon()),
+                ],
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }
 }
 
-//Widget para dividir los campos
-class Divisor extends StatelessWidget {
-  const Divisor({
+class StackImagenDivisora extends StatelessWidget {
+  const StackImagenDivisora({
     Key? key,
-    this.top = 0,
+    required this.img,
   }) : super(key: key);
-  final double? top;
+  final String img;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          // color: Colors.amber,
+          margin: EdgeInsets.only(top: 5.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                img,
+                width: 150,
+                height: 150,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class StackDescription extends StatelessWidget {
+  const StackDescription({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
+
+  final Map args;
 
   @override
   Widget build(BuildContext context) {
-    return const ImagenShow(
-        width: 300,
-        height: 300,
-        alignment: Alignment.center,
-        routeImage: 'assets/images/6.png');
+    return Stack(
+      children: [
+        Container(
+          // color: Colors.amber,
+          margin: EdgeInsets.only(top: 5.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 5.w),
+                // color: Colors.red,
+                child: Center(
+                  child: Text(
+                    args['description'],
+                    style: estiloTexto(20),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 5.w, left: 25.w),
+                // color: Colors.blue,
+                child: Lottie.asset(
+                  'assets/images/Description.json',
+                  width: 150,
+                  height: 150,
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
+}
+
+class StackNF extends StatelessWidget {
+  const StackNF({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
+
+  final Map args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Container(
+              // color: Colors.blue,
+              margin: EdgeInsets.only(top: 5.w, left: 2.w),
+              child: Lottie.asset('assets/images/Fiesta.json',
+                  width: 150, height: 150),
+            ),
+            Center(
+              child: Column(
+                children: [
+                  //Contenedor del nombre de la persona
+                  Container(
+                    // width: 100,
+                    margin: EdgeInsets.only(left: 2.w),
+                    // color: Colors.blueGrey,
+                    child: Text(
+                      args['name'],
+                      style: estiloTexto(20),
+                    ),
+                  ),
+                  //Container de la fecha format( dd mm)
+                  Container(
+                    // width: 100,
+                    margin: EdgeInsets.only(top: 2.w),
+                    // color: Colors.blueGrey,
+                    child: Text(
+                      DateFormat.MMMMd('en_US').format(
+                        DateTime.parse(args['dateStart']),
+                      ),
+                      style: estiloTexto(20),
+                    ),
+                  ),
+                  Container(
+                    // width: 100,
+                    margin: EdgeInsets.only(top: 2.w),
+                    // color: Colors.blueGrey,
+                    child: Text(
+                      DateFormat.y('en_US').format(
+                        DateTime.parse(args['dateStart']),
+                      ),
+                      style: estiloTexto(20),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class StackPrincipal extends StatelessWidget {
+  const StackPrincipal({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
+
+  final Map args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Container(
+              width: Adaptive.w(100),
+              // color: Colors.amber,
+              child: const ImagenShow(
+                  width: 392,
+                  height: 400,
+                  alignment: Alignment.center,
+                  routeImage: 'assets/images/Invite1.png'),
+            )
+          ],
+        ),
+        Container(
+          // color: Colors.red,
+          margin: EdgeInsets.only(top: 45.w),
+          child: Center(
+              child: Text(
+            args['name'],
+            style: estiloTexto(30),
+          )),
+        )
+      ],
+    );
+  }
+}
+
+TextStyle estiloTexto(double size) {
+  return TextStyle(
+      color: Colors.white, fontSize: size, fontWeight: FontWeight.bold);
 }

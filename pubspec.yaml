@@ -37,6 +37,7 @@ dependencies:
   flutter_polygon: ^0.3.0+2
   http: ^0.13.4
   intl: ^0.17.0
+  lottie: ^1.4.0
   modal_bottom_sheet: ^2.1.0
   provider: ^6.0.3
   qr_flutter: ^4.0.0

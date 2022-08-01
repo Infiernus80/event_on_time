@@ -31,10 +31,24 @@ class InputProvider with ChangeNotifier {
       }
     } else if (cReunion != 0 && cUsuario != 0) {
       event.validar();
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                title: const Text('Por favor espere'),
+                content: Container(
+                    width: 100,
+                    height: 100,
+                    alignment: Alignment.center,
+                    // margin: EdgeInsets.only(top: 20),
+                    child: const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+                    )),
+              ));
       Future.delayed(const Duration(seconds: 2), () {
         if (event.isData) {
-          Map<String,dynamic> map = event.mapaString();
-          Navigator.pushReplacementNamed(context, InviteScreen.route,arguments: map);
+          Map<String, dynamic> map = event.mapaString();
+          Navigator.pushReplacementNamed(context, InviteScreen.route,
+              arguments: map);
         } else {
           debugPrint('Se tardo en responder');
         }
