@@ -39,6 +39,7 @@ class InviteScreen extends StatelessWidget {
                   const StackImagenDivisora(
                     img: 'assets/images/food.json',
                   ),
+                  //Contenedor para la comida (Crear un for donde se muestren todos los servicios de comida que se manden de la base de datos)
                   StackCategorias(
                     txt1: args['services'][0]['name'],
                     txt2: args['services'][0]['description'],

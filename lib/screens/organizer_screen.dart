@@ -9,8 +9,9 @@ class OrganizerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
-        backgroundColor: Colors.amber,
+        backgroundColor: const Color.fromRGBO(83, 111, 138, 1),
       ),
       backgroundColor: Colors.white,
       body: const Center(
