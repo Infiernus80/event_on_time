@@ -1,3 +1,4 @@
+import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -37,12 +38,16 @@ class CustomDrawer extends StatelessWidget {
           ItemCustomDrawer(
             txt: 'Inicio',
             icon: Icons.home,
-            funtion: () {},
+            funtion: () {
+              Navigator.pushReplacementNamed(context, OrganizerScreen.route);
+            },
           ),
           ItemCustomDrawer(
             txt: 'Mis invitaciones',
             icon: Icons.list,
-            funtion: () {},
+            funtion: () {
+              Navigator.pushReplacementNamed(context, MyInvitesScreen.route);
+            },
           ),
           const Divider(),
           ElevatedButton(
@@ -51,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
               primary: Colors.black,
             ),
             onPressed: () {},
-            child: Text('Cerrar sesion'),
+            child: const Text('Cerrar sesion'),
           )
         ],
       ),
