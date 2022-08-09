@@ -1,7 +1,7 @@
 import 'package:event_on_time/widgets/custom_drawer.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+// import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MyInvitesScreen extends StatelessWidget {
   static String route = 'MyInvitesScreen';
