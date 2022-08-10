@@ -4,8 +4,10 @@ import 'package:flutter_polygon/flutter_polygon.dart';
 
 class BottonHexagon extends StatelessWidget {
   const BottonHexagon({
-    Key? key,
+    Key? key, required this.funtion,
   }) : super(key: key);
+
+  final Function funtion;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class BottonHexagon extends StatelessWidget {
                 // Default 0.0 degrees
               ),
             ),
-            onPressed: () {},
+            onPressed: () => funtion(),
             child: const Icon(Icons.arrow_forward_ios_outlined)),
       ),
     );

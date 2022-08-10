@@ -2,6 +2,7 @@ import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/class/validations.dart';
 import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/providers/inputs_providers.dart';
+import 'package:event_on_time/providers/keeper_scan.dart';
 import 'package:event_on_time/providers/switch_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 void main() => runApp(const MyApp());
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -33,6 +35,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => AuthEventProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => KeeperGetProvider(),
           ),
         ],
         child: ResponsiveSizer(builder: (context, orientation, screenType) {

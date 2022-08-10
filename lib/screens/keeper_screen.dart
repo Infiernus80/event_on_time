@@ -3,12 +3,19 @@ import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
+import '../providers/keeper_scan.dart';
+
 class KeeperScreen extends StatelessWidget {
   static String route = "KeeperScreen";
   const KeeperScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final args = (ModalRoute.of(context)!.settings.arguments) != null
+        ? ModalRoute.of(context)!.settings.arguments as Map
+        : {};
+    KeeperGetProvider keeper = KeeperGetProvider();
+    debugPrint('$args');
     return Scaffold(
         body: SingleChildScrollView(
       child: Stack(
@@ -23,7 +30,7 @@ class KeeperScreen extends StatelessWidget {
                         width: 240,
                         height: 240,
                         alignment: Alignment.center,
-                        routeImage: 'assets/images/logo.png'),
+                        routeImage: 'assets/images/Logo.png'),
                   )
                 ],
               ),
@@ -42,7 +49,10 @@ class KeeperScreen extends StatelessWidget {
                         ScanMode.QR,
                       );
                       // print(barcodeScanRes);
-                      if (barcodeScanRes != '-1') {
+                      keeper.datosInvitado(barcodeScanRes, args['guest']['token']);
+
+                      Future.delayed(const Duration(seconds: 2), () {
+                        if (keeper.isData) { 
                         showModalBottomSheet(
                           context: context,
                           shape: const RoundedRectangleBorder(
@@ -57,14 +67,18 @@ class KeeperScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                InfoPerson(
-                                  qr: barcodeScanRes,
-                                ),
+                                // InfoPerson(
+                                //   qr: barcodeScanRes,
+                                // ),
+                                Text(keeper.mapaString()),
                               ],
                             ),
                           ),
                         );
+                      }else{
+                        debugPrint('No funciona este codigo');
                       }
+                      });
                     },
                     style: ElevatedButton.styleFrom(
                         primary: Colors.amber,
@@ -101,7 +115,7 @@ class InfoPerson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<dynamic,dynamic> persona = PersonInvite().personas;
+    Map<dynamic, dynamic> persona = PersonInvite().personas;
     return SizedBox(
       child: FittedBox(
         fit: BoxFit.fitWidth,
@@ -126,7 +140,6 @@ class InfoPerson extends StatelessWidget {
                     txtBase: '${persona['Correo'][int.parse(qr)]}',
                     txtIdentificador: 'Correo: ',
                   ),
-                  
                   Row(
                     children: [
                       Padding(
@@ -186,7 +199,9 @@ class TextoAMostrar extends StatelessWidget {
             child: Text(
               txtBase,
               style: const TextStyle(
-                  color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],

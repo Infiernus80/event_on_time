@@ -3,9 +3,9 @@ import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-// import 'package:provider/provider.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class InviteScreen extends StatelessWidget {
   static String route = "InviteScreen";
@@ -36,7 +36,15 @@ class InviteScreen extends StatelessWidget {
                   //Contenedor para la ubicacion
                   StackCategorias(
                     txt1: (args['address'] != '') ? args['address'] : '',
-                    txt2: (args['dressCode'] != '') ? args['dressCode']: '',
+                    // txt2: (args['dressCode'] != '') ? args['dressCode']: '',
+                    fn: ()async{
+                      String url = args['googleMaps'];
+                      if (await canLaunchUrlString(url)) {
+                        await launchUrlString(url);
+                      }else{
+                        debugPrint('No se pudo abrir $url');
+                      }
+                    },
                   ),
                   //Divisor para la comida
                   const StackImagenDivisora(
@@ -44,9 +52,33 @@ class InviteScreen extends StatelessWidget {
                   ),
                   //Contenedor para la comida (Crear un for donde se muestren todos los servicios de comida que se manden de la base de datos)
                   StackCategorias(
-                    txt1: (args['services'][0]['name'] != '') ? args['services'][0]['name']: '',
-                    txt2: (args['services'][0]['description'] != '') ?args['services'][0]['description']: '',
+                    txt1: (args['services'][0]['name'] != '')
+                        ? args['services'][0]['name']
+                        : '',
+                    txt2: (args['services'][0]['description'] != '')
+                        ? args['services'][0]['description']
+                        : '',
+                        fn: (){},
                   ),
+                  const StackImagenDivisora(img: 'assets/images/QR.json'),
+                  Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            // color: Color.fromARGB(255, 255, 193, 7),
+                            // width: 200,
+                            // height: 200,
+                            margin: EdgeInsets.only(bottom: 10.w),
+                            child: QrImage(
+                              data: args['guest']['_id'],
+                              size: 70.w,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  )
                 ],
               )
             ],
@@ -62,11 +94,14 @@ class StackCategorias extends StatelessWidget {
     Key? key,
     // required this.args,
     required this.txt1,
-    required this.txt2,
+    this.txt2 = '',
+    required this.fn,
   }) : super(key: key);
 
   // final Map args;
-  final String txt1, txt2;
+  final String txt1;
+  final String? txt2;
+  final Function fn;
 
   @override
   Widget build(BuildContext context) {
@@ -83,14 +118,14 @@ class StackCategorias extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     width: 90.w,
                     // color: Colors.red,
                     child: (txt1 != '')
                         ? AutoSizeText(
                             txt1,
                             style: estiloTexto(20),
-                            textAlign: TextAlign.justify,
+                            textAlign: TextAlign.center,
                             maxLines: 5,
                           )
                         : const CircularProgressIndicator(),
@@ -108,12 +143,15 @@ class StackCategorias extends StatelessWidget {
                 children: [
                   Container(
                     // color: Colors.red,
+                    width: 90.w,
                     child: (txt2 != '')
-                        ? Text(
-                            txt2,
+                        ? AutoSizeText(
+                            txt2!,
                             style: estiloTexto(20),
+                            textAlign: TextAlign.center,
+                            maxLines: 5,
                           )
-                        : CircularProgressIndicator(),
+                        : Container(),
                   ),
                 ],
               ),
@@ -126,7 +164,11 @@ class StackCategorias extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(child: const BottonHexagon()),
+                  Container(
+                    child: BottonHexagon(
+                      funtion: fn,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -200,7 +242,7 @@ class StackDescription extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 5.w,left: 10),
+                margin: EdgeInsets.only(top: 5.w, left: 10),
                 // color: Colors.blue,
                 child: Lottie.asset(
                   'assets/images/Description.json',
@@ -303,29 +345,34 @@ class StackPrincipal extends StatelessWidget {
         Row(
           children: [
             Container(
-              width: Adaptive.w(100),
+              width: 100.w,
               // color: Colors.amber,
-              child: const ImagenShow(
-                  width: 392,
-                  height: 400,
-                  alignment: Alignment.center,
-                  routeImage: 'assets/images/Invite1.png'),
+              child: (args['type'] == 'Personal')
+                  ? Image.asset(
+                      'assets/images/Invite1.png',
+                      width: 100.w,
+                    )
+                  : (args['type'] == 'Boda')
+                      ? Image.asset('assets/images/Invite2.png')
+                      : (args['type'] == 'Laboral')
+                          ? Image.asset('assets/images/Invite3.png')
+                          : Container(),
             )
           ],
         ),
         Container(
           // color: Colors.red,
           width: 300,
-          margin: EdgeInsets.symmetric(horizontal: 30.w,vertical: 40.w),
+          margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 45.w),
           child: (args['name'] != '')
-          ? Center(
-              child: AutoSizeText(
-            args['name'],
-            style: estiloTexto(30),
-            minFontSize: 16,
-            maxLines: 2,
-          ))
-          : CircularProgressIndicator(),
+              ? Center(
+                  child: AutoSizeText(
+                  args['name'],
+                  style: estiloTexto(30),
+                  minFontSize: 16,
+                  maxLines: 2,
+                ))
+              : CircularProgressIndicator(),
         )
       ],
     );

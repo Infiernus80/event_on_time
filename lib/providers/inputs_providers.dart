@@ -30,7 +30,7 @@ class InputProvider with ChangeNotifier {
         debugPrint('Esto es una cuenta');
       }
     } else if (cReunion != 0 && cUsuario != 0) {
-      event.validar(cReunion,cUsuario);
+      event.validar(cReunion, cUsuario);
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -47,8 +47,13 @@ class InputProvider with ChangeNotifier {
       Future.delayed(const Duration(seconds: 2), () {
         if (event.isData) {
           Map<String, dynamic> map = event.mapaString();
-          Navigator.pushReplacementNamed(context, InviteScreen.route,
-              arguments: map);
+          if (map['guest']['role'] == 'Invitado') {
+            Navigator.pushReplacementNamed(context, InviteScreen.route,
+                arguments: map);
+          } else if (map['guest']['role'] == 'Cadenero') {
+            Navigator.pushReplacementNamed(context, KeeperScreen.route,
+                arguments: map);
+          }
         } else {
           debugPrint('Se tardo en responder');
         }
