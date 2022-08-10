@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
               OrganizerScreen.route: (context) => const OrganizerScreen(),
               MyInvitesScreen.route: (context) => const MyInvitesScreen(),
             },
-            initialRoute: MyInvitesScreen.route,
+            initialRoute: LoginScreen.route,
             theme: ThemeData(
                 useMaterial3: true,
                 fontFamily: 'Inter',
