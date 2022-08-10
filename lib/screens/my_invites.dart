@@ -1,7 +1,7 @@
 import 'package:event_on_time/widgets/custom_drawer.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+// import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MyInvitesScreen extends StatelessWidget {
   static String route = 'MyInvitesScreen';
@@ -16,9 +16,9 @@ class MyInvitesScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(83, 111, 138, 1),
       ),
       backgroundColor: Colors.white,
-      body: Stack(
+      body: SingleChildScrollView(
         // fit: StackFit.expand,
-        children: [
+        child: 
           Stack(
             children: [
               Column(
@@ -36,7 +36,7 @@ class MyInvitesScreen extends StatelessWidget {
                         direction: FlipDirection.HORIZONTAL,
                         speed: 1000,
                         onFlipDone: (status) {
-                          print(status);
+                          debugPrint('$status');
                         },
                         front: Container(
                           decoration: const BoxDecoration(
@@ -108,7 +108,7 @@ class MyInvitesScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             color: Color(0xFF006666),
                             borderRadius:
-                                BorderRadius.all(const Radius.circular(8.0)),
+                                BorderRadius.all(Radius.circular(8.0)),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -127,7 +127,6 @@ class MyInvitesScreen extends StatelessWidget {
               ),
             ],
           ),
-        ],
       ),
       drawer: const CustomDrawer(),
     );

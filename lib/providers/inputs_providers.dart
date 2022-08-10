@@ -30,7 +30,7 @@ class InputProvider with ChangeNotifier {
         debugPrint('Esto es una cuenta');
       }
     } else if (cReunion != 0 && cUsuario != 0) {
-      event.validar();
+      event.validar(cReunion,cUsuario);
       showDialog(
           context: context,
           builder: (_) => AlertDialog(

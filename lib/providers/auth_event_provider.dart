@@ -7,10 +7,10 @@ class AuthEventProvider with ChangeNotifier {
   Map<String,dynamic> map = {};
   bool isData = false; 
   
-  Future validar() async {
+  Future validar(int codeEvent, int codeInvite) async {
     final response = await http.post(
         Uri.parse('https://eventontime.herokuapp.com/api/auth/event'),
-        body: {"codeEvent": "7935", "codeInvit": "9173"});
+        body: {"codeEvent": codeEvent.toString(), "codeInvit": codeInvite.toString()});
 
     if (response.statusCode == 200) {
       isData = true;

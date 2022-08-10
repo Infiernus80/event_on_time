@@ -22,7 +22,7 @@ class CustomDrawer extends StatelessWidget {
                   CircleAvatar(
                     backgroundColor: const Color.fromRGBO(83, 111, 138, 1),
                     radius: 40,
-                    child: Image.asset('assets/images/logo.png'), //CircleAvatar
+                    child: Image.asset('assets/images/Logo.png'), //CircleAvatar
                   ),
                   Container(
                     padding: const EdgeInsets.only(top: 10),
