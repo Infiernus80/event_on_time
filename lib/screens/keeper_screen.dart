@@ -1,7 +1,9 @@
-import 'package:event_on_time/class/person_invite.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:lottie/lottie.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../providers/keeper_scan.dart';
 
@@ -15,92 +17,120 @@ class KeeperScreen extends StatelessWidget {
         ? ModalRoute.of(context)!.settings.arguments as Map
         : {};
     KeeperGetProvider keeper = KeeperGetProvider();
+    BuildContext dialogContext = context;
     debugPrint('$args');
     return Scaffold(
-        body: SingleChildScrollView(
-      child: Stack(
-        children: [
-          Column(
-            children: [
-              Row(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(left: 70, top: 40),
-                    child: ImagenShow(
-                        width: 240,
-                        height: 240,
+        body: SafeArea(
+      child: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      // color: Colors.amber,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
+                      child: ImagenShow(
+                        width: 80.w,
+                        height: 80.w,
                         alignment: Alignment.center,
-                        routeImage: 'assets/images/Logo.png'),
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 80, left: 58, right: 58),
-                child: SizedBox(
-                  width: 244,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      String barcodeScanRes =
-                          await FlutterBarcodeScanner.scanBarcode(
-                        '#F6B33E',
-                        'Cancelar',
-                        false,
-                        ScanMode.QR,
-                      );
-                      // print(barcodeScanRes);
-                      keeper.datosInvitado(barcodeScanRes, args['guest']['token']);
-
-                      Future.delayed(const Duration(seconds: 2), () {
-                        if (keeper.isData) { 
-                        showModalBottomSheet(
-                          context: context,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30))),
-                          backgroundColor:
-                              const Color.fromRGBO(67, 125, 160, 1),
-                          builder: (context) => SizedBox(
-                            height: 500,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                // InfoPerson(
-                                //   qr: barcodeScanRes,
-                                // ),
-                                Text(keeper.mapaString()),
-                              ],
-                            ),
-                          ),
+                        routeImage: 'assets/images/Logo.png',
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  // color: Colors.amberAccent,
+                  margin: EdgeInsets.symmetric(vertical: 10.w),
+                  width: 80.w,
+                  child: SizedBox(
+                    width: 244,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        String barcodeScanRes =
+                            await FlutterBarcodeScanner.scanBarcode(
+                          '#F6B33E',
+                          'Cancelar',
+                          false,
+                          ScanMode.QR,
                         );
-                      }else{
-                        debugPrint('No funciona este codigo');
-                      }
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                        primary: Colors.amber,
-                        onPrimary: Colors.white,
-                        maximumSize: const Size(300, 60),
-                        textStyle: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
-                    child: const Text('ESCANEAR'),
+                        // print(barcodeScanRes);
+
+                        if (barcodeScanRes != '') {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              dialogContext = context;
+                              return Dialog(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    LottieBuilder.asset('assets/images/QRload.json',width: 100,),
+                                    const Text("Por favor espere..."),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                          keeper.datosInvitado(
+                              barcodeScanRes, args['guest']['token']);
+
+                          Future.delayed(const Duration(seconds: 3), () {
+                            if (keeper.isData) {
+                              Navigator.pop(dialogContext);
+                              Map map = keeper.mapaString();
+                              showModalBottomSheet(
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(30),
+                                        topRight: Radius.circular(30))),
+                                backgroundColor:
+                                    const Color.fromRGBO(67, 125, 160, 1),
+                                builder: (context) => SizedBox(
+                                  height: 75.w,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      InfoPerson(
+                                        qr: map,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              debugPrint('No funciona este codigo');
+                            }
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.amber,
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      child: const Text('ESCANEAR'),
+                    ),
                   ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 50),
-                child: ImagenShow(
-                    width: 300,
-                    height: 300,
-                    alignment: Alignment.center,
-                    routeImage: 'assets/images/qr.png'),
-              )
-            ],
-          ),
-        ],
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 5.w),
+                  child: const ImagenShow(
+                      width: 300,
+                      height: 300,
+                      alignment: Alignment.center,
+                      routeImage: 'assets/images/qr.png'),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     ));
   }
@@ -111,11 +141,10 @@ class InfoPerson extends StatelessWidget {
     Key? key,
     required this.qr,
   }) : super(key: key);
-  final String qr;
+  final Map qr;
 
   @override
   Widget build(BuildContext context) {
-    Map<dynamic, dynamic> persona = PersonInvite().personas;
     return SizedBox(
       child: FittedBox(
         fit: BoxFit.fitWidth,
@@ -129,33 +158,31 @@ class InfoPerson extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextoAMostrar(
-                    txtBase: '${persona['Nombre'][int.parse(qr)]}',
+                    txtBase: '${qr['name']}',
                     txtIdentificador: 'Nombre: ',
                   ),
                   TextoAMostrar(
-                    txtBase: '${persona['Acompañantes'][int.parse(qr)]}',
+                    txtBase: '${qr['numberPartner'].toString()}',
                     txtIdentificador: 'Acompañantes: ',
                   ),
                   TextoAMostrar(
-                    txtBase: '${persona['Correo'][int.parse(qr)]}',
+                    txtBase: '${qr['email']}',
                     txtIdentificador: 'Correo: ',
                   ),
                   Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 94, left: 50),
-                        child: SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            style: styleForText(),
-                            child: const Text(
-                              'Aceptar',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                      Container(
+                        width: 90.w,
+                        height: 50,
+                        margin: EdgeInsets.only(top: 10.w),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: styleForText(),
+                          child: const Text(
+                            'Aceptar',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),
@@ -191,17 +218,19 @@ class TextoAMostrar extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          AutoSizeText(
             txtIdentificador,
             style: styleText(),
           ),
           SizedBox(
-            child: Text(
+            child: AutoSizeText(
               txtBase,
               style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              maxLines: 2,
             ),
           ),
         ],

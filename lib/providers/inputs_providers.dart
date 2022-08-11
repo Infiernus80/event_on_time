@@ -1,7 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:validated/validated.dart' as validate;
 
 class InputProvider with ChangeNotifier {
@@ -15,6 +18,7 @@ class InputProvider with ChangeNotifier {
     String contra = '';
     int cReunion = 0;
     int cUsuario = 0;
+    BuildContext dialogContext = context;
 
     if (!switchP) {
       //Los datos del controlador se ponen en sus respectivas variables
@@ -32,20 +36,27 @@ class InputProvider with ChangeNotifier {
     } else if (cReunion != 0 && cUsuario != 0) {
       event.validar(cReunion, cUsuario);
       showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                title: const Text('Por favor espere'),
-                content: Container(
-                    width: 100,
-                    height: 100,
-                    alignment: Alignment.center,
-                    // margin: EdgeInsets.only(top: 20),
-                    child: const CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
-                    )),
-              ));
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          dialogContext = context;
+          return Dialog(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LottieBuilder.asset(
+                  'assets/images/loading.json',
+                  width: 100,
+                ),
+                const Text("Por favor espere..."),
+              ],
+            ),
+          );
+        },
+      );
       Future.delayed(const Duration(seconds: 2), () {
         if (event.isData) {
+          Navigator.pop(dialogContext);
           Map<String, dynamic> map = event.mapaString();
           if (map['guest']['role'] == 'Invitado') {
             Navigator.pushReplacementNamed(context, InviteScreen.route,
@@ -55,7 +66,54 @@ class InputProvider with ChangeNotifier {
                 arguments: map);
           }
         } else {
-          debugPrint('Se tardo en responder');
+          Navigator.pop(dialogContext);
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              dialogContext = context;
+              return Dialog(
+                child: Container(
+                  // height: 70.w,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 10.w),
+                        child: LottieBuilder.asset(
+                          'assets/images/error.json',
+                          width: 200,
+                        ),
+                      ),
+                      Container(
+                        width: 50.w,
+                        child: const AutoSizeText(
+                          "Por favor intentalo de nuevo...",
+                          style: TextStyle(fontSize: 20),
+                          maxLines: 2,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        width: 90.w,
+                        margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.w),
+                        child: ElevatedButton(
+                          style: TextButton.styleFrom(
+                            
+                            backgroundColor: Colors.amber
+                          ),
+                          onPressed: () {
+                            Navigator.pop(dialogContext);
+                          },
+                          child: Text('Aceptar',style: TextStyle(color: Colors.white),),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         }
       });
     } else {
@@ -65,14 +123,13 @@ class InputProvider with ChangeNotifier {
         error2(context);
       }
     }
-
     notifyListeners();
   }
 
   error1(BuildContext context) {
     CoolAlert.show(
         context: context,
-        text: "Esta invitación no es valida ",
+        text: "Por favor llena los campos",
         type: CoolAlertType.error,
         confirmBtnColor: Colors.amber);
   }
@@ -80,7 +137,7 @@ class InputProvider with ChangeNotifier {
   error2(BuildContext context) {
     CoolAlert.show(
         context: context,
-        text: "Credenciales no validas, intenta de nuevo",
+        text: "Por favor llena los campos",
         type: CoolAlertType.error,
         confirmBtnColor: Colors.amber);
   }

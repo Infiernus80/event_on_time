@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class InviteScreen extends StatelessWidget {
   static String route = "InviteScreen";
   const InviteScreen({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,12 @@ class InviteScreen extends StatelessWidget {
         ? ModalRoute.of(context)!.settings.arguments as Map
         : {};
     debugPrint('$args');
-
+    List<DropdownMenuItem<String>> menuItems = [
+    DropdownMenuItem(child: Text("USA"),value: "USA"),
+    DropdownMenuItem(child: Text("Canada"),value: "Canada"),
+    DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+  ];
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -26,30 +32,39 @@ class InviteScreen extends StatelessWidget {
             children: [
               Column(
                 children: [
+                  //Imagen Principal
                   StackPrincipal(args: args),
+                  //Div donde se encuentra la fecha
                   StackNF(args: args),
+                  //Div de la descripcion del evento
                   StackDescription(args: args),
                   //Divisor para la ubicacion
                   const StackImagenDivisora(
                     img: 'assets/images/Locate.json',
+                    repet: true,
                   ),
                   //Contenedor para la ubicacion
                   StackCategorias(
-                    txt1: (args['address'] != '') ? args['address'] : '',
+                    txt1: (args['address'] != '')
+                        ? 'Ubicación: ${args['address']}'
+                        : '',
                     // txt2: (args['dressCode'] != '') ? args['dressCode']: '',
-                    fn: ()async{
+                    fn: () async {
                       String url = args['googleMaps'];
                       if (await canLaunchUrlString(url)) {
                         await launchUrlString(url);
-                      }else{
+                      } else {
                         debugPrint('No se pudo abrir $url');
                       }
                     },
+                    boton: true,
                   ),
+
                   //Divisor para la comida
                   const StackImagenDivisora(
                     img: 'assets/images/food.json',
                   ),
+
                   //Contenedor para la comida (Crear un for donde se muestren todos los servicios de comida que se manden de la base de datos)
                   StackCategorias(
                     txt1: (args['services'][0]['name'] != '')
@@ -58,33 +73,82 @@ class InviteScreen extends StatelessWidget {
                     txt2: (args['services'][0]['description'] != '')
                         ? args['services'][0]['description']
                         : '',
-                        fn: (){},
+                    fn: () {},
                   ),
-                  const StackImagenDivisora(img: 'assets/images/QR.json'),
+
+                  //Div para el codigo de vestimenta
+                  const StackImagenDivisoraNormal(
+                      img: 'assets/images/dresscode.png'),
+
+                  //Contenedor del texto para el codigo de vestimenta
+                  StackCategorias(
+                      txt1: 'Tipo de ropa: ${args['dressCode']}', fn: () {}),
+                  //Div para el codigo de vestimenta
+                  const StackImagenDivisora(img: 'assets/images/confirm.json'),
+
                   Stack(
                     children: [
                       Column(
                         children: [
-                          Container(
-                            // color: Color.fromARGB(255, 255, 193, 7),
-                            // width: 200,
-                            // height: 200,
-                            margin: EdgeInsets.only(bottom: 10.w),
-                            child: QrImage(
-                              data: args['guest']['_id'],
-                              size: 70.w,
+                          Center(
+                            child: Container(
+                              // color: Colors.amber,
+                              width: 200,
+                              child: Center(
+                                child: DropdownButton(
+                                  value: 'USA',
+                                  items: menuItems,
+                                  onChanged: (value){},
+                                ),
+                              ) ,
                             ),
                           )
                         ],
                       )
                     ],
-                  )
+                  ),
+
+                  //Muestra de codigo qr
+                  const StackImagenDivisora(img: 'assets/images/QR.json'),
+                  StackQR(args: args)
                 ],
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class StackQR extends StatelessWidget {
+  const StackQR({
+    Key? key,
+    required this.args,
+  }) : super(key: key);
+
+  final Map args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Container(
+              // color: Color.fromARGB(255, 255, 193, 7),
+              // width: 200,
+              // height: 200,
+              margin: EdgeInsets.only(bottom: 10.w),
+              child: QrImage(
+                data: args['guest']['_id'],
+                size: 70.w,
+                backgroundColor: Colors.white,
+              ),
+            )
+          ],
+        )
+      ],
     );
   }
 }
@@ -96,12 +160,14 @@ class StackCategorias extends StatelessWidget {
     required this.txt1,
     this.txt2 = '',
     required this.fn,
+    this.boton,
   }) : super(key: key);
 
   // final Map args;
   final String txt1;
   final String? txt2;
   final Function fn;
+  final bool? boton;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +194,7 @@ class StackCategorias extends StatelessWidget {
                             textAlign: TextAlign.center,
                             maxLines: 5,
                           )
-                        : const CircularProgressIndicator(),
+                        : Container(),
                   ),
                 ],
               ),
@@ -158,20 +224,22 @@ class StackCategorias extends StatelessWidget {
             ),
 
             //CONTENEDOR PARA BOTON
-            Container(
-              // color: Colors.black,
-              // margin: EdgeInsets.only(top: 1.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    child: BottonHexagon(
-                      funtion: fn,
+            (boton == true)
+                ? Container(
+                    // color: Colors.black,
+                    // margin: EdgeInsets.only(top: 1.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: BottonHexagon(
+                            funtion: fn,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
+                  )
+                : Container(),
           ],
         ),
       ],
@@ -183,8 +251,10 @@ class StackImagenDivisora extends StatelessWidget {
   const StackImagenDivisora({
     Key? key,
     required this.img,
+    this.repet,
   }) : super(key: key);
   final String img;
+  final bool? repet;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -199,7 +269,39 @@ class StackImagenDivisora extends StatelessWidget {
                 img,
                 width: 150,
                 height: 150,
+                repeat: repet,
               )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class StackImagenDivisoraNormal extends StatelessWidget {
+  const StackImagenDivisoraNormal({
+    Key? key,
+    required this.img,
+    this.repet,
+  }) : super(key: key);
+  final String img;
+  final bool? repet;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          // color: Colors.amber,
+          margin: EdgeInsets.only(top: 10.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                img,
+                width: 150,
+                height: 150,
+              ),
             ],
           ),
         ),
@@ -276,7 +378,7 @@ class StackNF extends StatelessWidget {
               // color: Colors.blue,
               margin: EdgeInsets.only(top: 5.w, left: 2.w),
               child: Lottie.asset('assets/images/Fiesta.json',
-                  width: 150, height: 150),
+                  width: 150, height: 150, repeat: false),
             ),
             Center(
               child: Column(
@@ -346,7 +448,6 @@ class StackPrincipal extends StatelessWidget {
           children: [
             Container(
               width: 100.w,
-              // color: Colors.amber,
               child: (args['type'] == 'Personal')
                   ? Image.asset(
                       'assets/images/Invite1.png',
@@ -362,7 +463,7 @@ class StackPrincipal extends StatelessWidget {
         ),
         Container(
           // color: Colors.red,
-          width: 300,
+          // width: 90.w,
           margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 45.w),
           child: (args['name'] != '')
               ? Center(
