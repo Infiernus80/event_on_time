@@ -3,28 +3,24 @@ import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../providers/custom_dropdown.dart';
+
 class InviteScreen extends StatelessWidget {
   static String route = "InviteScreen";
   const InviteScreen({Key? key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
-    // final arg = Provider.of<ScreenArguments>(context);
+    final confirmation = Provider.of<CustomDropdown>(context);
     final args = (ModalRoute.of(context)!.settings.arguments) != null
         ? ModalRoute.of(context)!.settings.arguments as Map
         : {};
     debugPrint('$args');
-    List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(child: Text("USA"),value: "USA"),
-    DropdownMenuItem(child: Text("Canada"),value: "Canada"),
-    DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
-    DropdownMenuItem(child: Text("England"),value: "England"),
-  ];
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -84,7 +80,10 @@ class InviteScreen extends StatelessWidget {
                   StackCategorias(
                       txt1: 'Tipo de ropa: ${args['dressCode']}', fn: () {}),
                   //Div para el codigo de vestimenta
-                  const StackImagenDivisora(img: 'assets/images/confirm.json'),
+                  StackImagenDivisora(
+                      img: (confirmation.mapaString())
+                          ? 'assets/images/decline.json'
+                          : 'assets/images/confirm.json'),
 
                   Stack(
                     children: [
@@ -95,14 +94,22 @@ class InviteScreen extends StatelessWidget {
                               // color: Colors.amber,
                               width: 200,
                               child: Center(
-                                child: DropdownButton(
-                                  value: 'USA',
-                                  items: menuItems,
-                                  onChanged: (value){},
-                                ),
-                              ) ,
+                                  child: ElevatedButton(
+                                child: (confirmation.mapaString())
+                                    ? const Text('Rechazar invitación')
+                                    : const Text('Confirmar asistencia'),
+                                onPressed: () {
+                                  debugPrint(
+                                      'Antes de enviar ${confirmation.mapaString()}');
+                                  confirmation.confirmarRechazar(
+                                      args['guest']['token']);
+
+                                  debugPrint(
+                                      'Despues de enviar ${confirmation.mapaString()}');
+                                },
+                              )),
                             ),
-                          )
+                          ),
                         ],
                       )
                     ],
@@ -340,7 +347,7 @@ class StackDescription extends StatelessWidget {
                           maxLines: 5,
                           textAlign: TextAlign.justify,
                         )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 ),
               ),
               Container(
@@ -393,7 +400,7 @@ class StackNF extends StatelessWidget {
                             args['name'],
                             style: estiloTexto(20),
                           )
-                        : CircularProgressIndicator(),
+                        : const CircularProgressIndicator(),
                   ),
                   //Container de la fecha format( dd mm)
                   Container(
@@ -407,7 +414,7 @@ class StackNF extends StatelessWidget {
                             ),
                             style: estiloTexto(20),
                           )
-                        : CircularProgressIndicator(),
+                        : const CircularProgressIndicator(),
                   ),
                   Container(
                     // width: 100,
@@ -420,7 +427,7 @@ class StackNF extends StatelessWidget {
                             ),
                             style: estiloTexto(20),
                           )
-                        : CircularProgressIndicator(),
+                        : const CircularProgressIndicator(),
                   ),
                 ],
               ),
@@ -442,6 +449,7 @@ class StackPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(args['services'].runtimeType.toString());
     return Stack(
       children: [
         Row(
@@ -473,7 +481,7 @@ class StackPrincipal extends StatelessWidget {
                   minFontSize: 16,
                   maxLines: 2,
                 ))
-              : CircularProgressIndicator(),
+              : const CircularProgressIndicator(),
         )
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/class/validations.dart';
 import 'package:event_on_time/providers/auth_event_provider.dart';
+import 'package:event_on_time/providers/custom_dropdown.dart';
 import 'package:event_on_time/providers/inputs_providers.dart';
 import 'package:event_on_time/providers/keeper_scan.dart';
 import 'package:event_on_time/providers/switch_provider.dart';
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => KeeperGetProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => CustomDropdown(),
           ),
         ],
         child: ResponsiveSizer(builder: (context, orientation, screenType) {
