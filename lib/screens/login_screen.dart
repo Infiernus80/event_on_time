@@ -12,6 +12,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SwitchProvider switchP = Provider.of<SwitchProvider>(context);
     InputProvider inputs = Provider.of<InputProvider>(context);
+    // CustomDropdown confirmation = Provider.of<CustomDropdown>(context);
     // AuthEventProvider auth = Provider.of<AuthEventProvider>(context);
     return SafeArea(
       child: Scaffold(
@@ -52,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                           child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(
-                                image: AssetImage('assets/images/Logo.png'),
+                                image: AssetImage('assets/images/logo.png'),
                               ),
                             ),
                             // margin: const EdgeInsets.only(top: 50),

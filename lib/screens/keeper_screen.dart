@@ -3,8 +3,10 @@ import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../providers/auth_user_provider.dart';
 import '../providers/keeper_scan.dart';
 
 class KeeperScreen extends StatelessWidget {
@@ -16,7 +18,11 @@ class KeeperScreen extends StatelessWidget {
     final args = (ModalRoute.of(context)!.settings.arguments) != null
         ? ModalRoute.of(context)!.settings.arguments as Map
         : {};
+    
     KeeperGetProvider keeper = KeeperGetProvider();
+
+
+
     BuildContext dialogContext = context;
     debugPrint('$args');
     return Scaffold(
@@ -36,7 +42,7 @@ class KeeperScreen extends StatelessWidget {
                         width: 80.w,
                         height: 80.w,
                         alignment: Alignment.center,
-                        routeImage: 'assets/images/Logo.png',
+                        routeImage: 'assets/images/logo.png',
                       ),
                     )
                   ],
@@ -69,7 +75,10 @@ class KeeperScreen extends StatelessWidget {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    LottieBuilder.asset('assets/images/QRload.json',width: 100,),
+                                    LottieBuilder.asset(
+                                      'assets/images/QRload.json',
+                                      width: 100,
+                                    ),
                                     const Text("Por favor espere..."),
                                   ],
                                 ),

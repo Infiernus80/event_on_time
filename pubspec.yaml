@@ -29,6 +29,7 @@ environment:
 dependencies:
   animate_do: ^2.1.0
   auto_size_text: ^3.0.0
+  carousel_slider: ^4.1.1
   cool_alert: ^1.1.0
   cupertino_icons: ^1.0.2
   flip_card: ^0.6.0
@@ -47,6 +48,7 @@ dependencies:
   responsive_sizer: ^3.1.0
   sidebarx: ^0.7.0
   simple_animations: ^4.2.0
+  syncfusion_flutter_charts: ^20.2.43
   url_launcher: ^6.1.5
   validated: ^2.0.0
 

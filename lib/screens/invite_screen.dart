@@ -1,4 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:event_on_time/screens/login_screen.dart';
+import 'package:event_on_time/screens/screens.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,12 +19,20 @@ class InviteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final confirmation = Provider.of<CustomDropdown>(context);
+    CustomDropdown confirmation = Provider.of<CustomDropdown>(context);
     final args = (ModalRoute.of(context)!.settings.arguments) != null
         ? ModalRoute.of(context)!.settings.arguments as Map
         : {};
-    debugPrint('$args');
+    List imagenes = args['pictures'];
+    List comida = args['services'];
+
+    // debugPrint('$args');
+    // debugPrint('$');
+    debugPrint('${args['services']}');
+    // debugPrint('${args['pictures']}');
+    // debugPrint('${args['guest']}');
     return Scaffold(
+      // backgroundColor: Colors.grey.shade200,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -62,15 +73,7 @@ class InviteScreen extends StatelessWidget {
                   ),
 
                   //Contenedor para la comida (Crear un for donde se muestren todos los servicios de comida que se manden de la base de datos)
-                  StackCategorias(
-                    txt1: (args['services'][0]['name'] != '')
-                        ? args['services'][0]['name']
-                        : '',
-                    txt2: (args['services'][0]['description'] != '')
-                        ? args['services'][0]['description']
-                        : '',
-                    fn: () {},
-                  ),
+                  StackComida(comida: comida),
 
                   //Div para el codigo de vestimenta
                   const StackImagenDivisoraNormal(
@@ -79,51 +82,161 @@ class InviteScreen extends StatelessWidget {
                   //Contenedor del texto para el codigo de vestimenta
                   StackCategorias(
                       txt1: 'Tipo de ropa: ${args['dressCode']}', fn: () {}),
-                  //Div para el codigo de vestimenta
+
+                  (imagenes.isEmpty)
+                      ? Container()
+                      : const StackImagenDivisora(
+                          img: 'assets/images/photo2.json', repet: false),
+
+                  //Muestra de carrusel
+                  StackCarrusel(imagenes: imagenes),
+
+                  //Div para la confirmacion
                   StackImagenDivisora(
-                      img: (confirmation.mapaString())
+                      img: (confirmation.map['result']['confirmation'])
                           ? 'assets/images/decline.json'
                           : 'assets/images/confirm.json'),
-
-                  Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Center(
-                            child: Container(
-                              // color: Colors.amber,
-                              width: 200,
-                              child: Center(
-                                  child: ElevatedButton(
-                                child: (confirmation.mapaString())
-                                    ? const Text('Rechazar invitación')
-                                    : const Text('Confirmar asistencia'),
-                                onPressed: () {
-                                  debugPrint(
-                                      'Antes de enviar ${confirmation.mapaString()}');
-                                  confirmation.confirmarRechazar(
-                                      args['guest']['token']);
-
-                                  debugPrint(
-                                      'Despues de enviar ${confirmation.mapaString()}');
-                                },
-                              )),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+                  //Muestra del boton para confirmar
+                  StackConfirmation(confirmation: confirmation, args: args),
 
                   //Muestra de codigo qr
-                  const StackImagenDivisora(img: 'assets/images/QR.json'),
-                  StackQR(args: args)
+                  const StackImagenDivisora(img: 'assets/images/QR2.json'),
+                  StackQR(args: args),
+
+                  const BtnRegresar()
                 ],
               )
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class StackComida extends StatelessWidget {
+  const StackComida({
+    Key? key,
+    required this.comida,
+  }) : super(key: key);
+
+  final List comida;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 3.h),
+          child: Column(children: [
+            for(var row in comida ) Text(row['name'],style: estiloTexto(20),),
+          ],),
+        ),
+      ],
+    );
+  }
+}
+
+class StackCarrusel extends StatelessWidget {
+  const StackCarrusel({
+    Key? key,
+    required this.imagenes,
+  }) : super(key: key);
+
+  final List imagenes;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            (imagenes.isEmpty)
+                ? Container()
+                : CarouselSlider(
+                    items: imagenes
+                        .map((e) => Container(
+                              margin: EdgeInsets.only(bottom: 2.h),
+                              child: Center(
+                                child: Image.network(e['url']),
+                              ),
+                            ))
+                        .toList(),
+                    options: CarouselOptions(),
+                  )
+          ],
+        )
+      ],
+    );
+  }
+}
+
+class BtnRegresar extends StatelessWidget {
+  const BtnRegresar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 70.w,
+      height: 5.h,
+      margin: EdgeInsets.only(bottom: 4.h),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+            builder: (context) {
+              return const LoginScreen();
+            },
+          ), (route) => false);
+        },
+        child: const Text('Regresar'),
+      ),
+    );
+  }
+}
+
+class StackConfirmation extends StatelessWidget {
+  const StackConfirmation({
+    Key? key,
+    required this.confirmation,
+    required this.args,
+  }) : super(key: key);
+
+  final CustomDropdown confirmation;
+  final Map args;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Center(
+              child: Container(
+                // color: Colors.amber,
+                margin: EdgeInsets.only(bottom: 3.h),
+                width: 200,
+                child: Center(
+                    child: ElevatedButton(
+                  child: (confirmation.map['result']['confirmation'])
+                      ? const Text('Rechazar invitación')
+                      : const Text('Confirmar asistencia'),
+                  onPressed: () {
+                    debugPrint(
+                        'Antes de enviar ${confirmation.map['result']['confirmation']}');
+                    confirmation.confirmarRechazar(args['guest']['token']);
+                    Future.delayed(const Duration(seconds: 2), () {
+                      debugPrint(
+                          'Despues de enviar ${confirmation.map['result']['confirmation']}');
+                    });
+                  },
+                )),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
@@ -187,7 +300,7 @@ class StackCategorias extends StatelessWidget {
               // width: 30.w,
               // height: 20.w,
               // color: Colors.black,
-              margin: EdgeInsets.only(top: 3.w),
+              margin: EdgeInsets.only(top: 1.w,bottom: 3.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -234,14 +347,12 @@ class StackCategorias extends StatelessWidget {
             (boton == true)
                 ? Container(
                     // color: Colors.black,
-                    // margin: EdgeInsets.only(top: 1.w),
+                    margin: EdgeInsets.only(bottom: 3.h),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          child: BottonHexagon(
-                            funtion: fn,
-                          ),
+                        BottonHexagon(
+                          funtion: fn,
                         ),
                       ],
                     ),
@@ -281,6 +392,10 @@ class StackImagenDivisora extends StatelessWidget {
             ],
           ),
         ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: const Divider(color: Colors.white,thickness: 5),
+        ),
       ],
     );
   }
@@ -306,11 +421,15 @@ class StackImagenDivisoraNormal extends StatelessWidget {
             children: [
               Image.asset(
                 img,
-                width: 150,
-                height: 150,
+                width: 100,
+                height: 100,
               ),
             ],
           ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: const Divider(color: Colors.white,thickness: 5),
         ),
       ],
     );
@@ -471,14 +590,15 @@ class StackPrincipal extends StatelessWidget {
         ),
         Container(
           // color: Colors.red,
-          // width: 90.w,
-          margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 45.w),
+          width: 100.w,
+          margin: EdgeInsets.symmetric(horizontal: 30.w, vertical: 22.h),
           child: (args['name'] != '')
               ? Center(
                   child: AutoSizeText(
                   args['name'],
                   style: estiloTexto(30),
-                  minFontSize: 16,
+                  minFontSize: 12,
+                  textAlign: TextAlign.center,
                   maxLines: 2,
                 ))
               : const CircularProgressIndicator(),

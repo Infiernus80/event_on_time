@@ -1,6 +1,8 @@
 import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/class/validations.dart';
 import 'package:event_on_time/providers/auth_event_provider.dart';
+import 'package:event_on_time/providers/auth_stadistic_user.dart';
+import 'package:event_on_time/providers/auth_user_provider.dart';
 import 'package:event_on_time/providers/custom_dropdown.dart';
 import 'package:event_on_time/providers/inputs_providers.dart';
 import 'package:event_on_time/providers/keeper_scan.dart';
@@ -43,6 +45,12 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (context) => CustomDropdown(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => AuthUserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthStadisticUserProvider(),
+          ),
         ],
         child: ResponsiveSizer(builder: (context, orientation, screenType) {
           return MaterialApp(
@@ -61,7 +69,7 @@ class MyApp extends StatelessWidget {
                 useMaterial3: true,
                 fontFamily: 'Inter',
                 // Color de las letras
-                primaryColor: const Color.fromRGBO(228, 161, 147, 1),
+                primaryColor: Color.fromRGBO(228, 161, 147, 1),
                 secondaryHeaderColor: primary,
                 scaffoldBackgroundColor: primary,
                 textTheme: const TextTheme(

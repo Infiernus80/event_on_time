@@ -16,6 +16,8 @@ class AuthEventProvider with ChangeNotifier {
       isData = true;
       map = json.decode(response.body);
         notifyListeners();
+    }else{
+      isData = false;
     }
   }
 

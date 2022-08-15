@@ -4,8 +4,12 @@ import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:validated/validated.dart' as validate;
+
+import 'auth_user_provider.dart';
+import 'custom_dropdown.dart';
 
 class InputProvider with ChangeNotifier {
   final campo1 = TextEditingController();
@@ -14,6 +18,9 @@ class InputProvider with ChangeNotifier {
   AuthEventProvider event = AuthEventProvider();
 
   validations(BuildContext context, bool switchP) {
+    CustomDropdown confirmation =
+        Provider.of<CustomDropdown>(context, listen: false);
+    AuthUserProvider user = Provider.of<AuthUserProvider>(context,listen: false);
     String correo = '';
     String contra = '';
     int cReunion = 0;
@@ -30,8 +37,87 @@ class InputProvider with ChangeNotifier {
     }
 
     if (correo != '' && contra != '') {
-      if (validate.isEmail(correo) && contra.length >= 8) {
-        debugPrint('Esto es una cuenta');
+      if (validate.isEmail(correo)) {
+        user.validar(correo, contra);
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            dialogContext = context;
+            return Dialog(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  LottieBuilder.asset(
+                    'assets/images/loading.json',
+                    width: 100,
+                  ),
+                  const Text("Por favor espere..."),
+                ],
+              ),
+            );
+          },
+        );
+
+        Future.delayed(const Duration(seconds: 2), () {
+          if (user.isDataGet()) {
+            Navigator.pop(dialogContext);
+            Map<String, dynamic> map = user.mapaString();
+            Navigator.pushReplacementNamed(context, OrganizerScreen.route,
+                arguments: map);
+          } else {
+            Navigator.pop(dialogContext);
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                dialogContext = context;
+                return Dialog(
+                  child: Container(
+                    // height: 70.w,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 10.w),
+                          child: LottieBuilder.asset(
+                            'assets/images/error.json',
+                            width: 200,
+                          ),
+                        ),
+                        Container(
+                          width: 50.w,
+                          child: const AutoSizeText(
+                            "Por favor intentalo de nuevo...",
+                            style: TextStyle(fontSize: 20),
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                          width: 90.w,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10.w, vertical: 10.w),
+                          child: ElevatedButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.amber),
+                            onPressed: () {
+                              Navigator.pop(dialogContext);
+                            },
+                            child: Text(
+                              'Aceptar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+        });
       }
     } else if (cReunion != 0 && cUsuario != 0) {
       event.validar(cReunion, cUsuario);
@@ -58,6 +144,8 @@ class InputProvider with ChangeNotifier {
         if (event.isData) {
           Navigator.pop(dialogContext);
           Map<String, dynamic> map = event.mapaString();
+          confirmation.mapaString = map['guest']['confirmation'];
+
           if (map['guest']['role'] == 'Invitado') {
             Navigator.pushReplacementNamed(context, InviteScreen.route,
                 arguments: map);
@@ -96,16 +184,18 @@ class InputProvider with ChangeNotifier {
                       ),
                       Container(
                         width: 90.w,
-                        margin: EdgeInsets.symmetric(horizontal: 10.w,vertical: 10.w),
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 10.w),
                         child: ElevatedButton(
                           style: TextButton.styleFrom(
-                            
-                            backgroundColor: Colors.amber
-                          ),
+                              backgroundColor: Colors.amber),
                           onPressed: () {
                             Navigator.pop(dialogContext);
                           },
-                          child: Text('Aceptar',style: TextStyle(color: Colors.white),),
+                          child: Text(
+                            'Aceptar',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       )
                     ],

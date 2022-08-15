@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CustomDropdown with ChangeNotifier {
-  Map<String, dynamic> map = {};
+  Map<String, dynamic> _map = {};
+
+  Map<String, dynamic> get map => _map;
+
+  set map(Map<String, dynamic> map) {
+    _map = map;
+  }
   bool isData = true;
 
   Future confirmarRechazar(String token) async {
@@ -17,14 +23,26 @@ class CustomDropdown with ChangeNotifier {
 
     if (response.statusCode == 200) {
       isData = false;
-      map = json.decode(response.body);
+      _map = json.decode(response.body);
       notifyListeners();
-    }else{
+    } else {
       return debugPrint('Error 404');
     }
   }
 
-  mapaString() => map['result']['confirmation'];
+  // get mapaString => ;
+
+  set mapaString(value) {
+    _map = {
+      'result': {
+        'confirmation': value,
+      }
+    };
+
+    debugPrint('$map');
+  }
+
+
 
   isDataGet() => isData;
 }
