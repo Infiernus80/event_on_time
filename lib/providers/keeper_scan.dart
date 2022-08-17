@@ -19,6 +19,9 @@ class KeeperGetProvider with ChangeNotifier {
       map = json.decode(response.body);
       notifyListeners();
     }
+    else{
+      isData = false;
+    }
   }
 
   mapaString() => map['result'];

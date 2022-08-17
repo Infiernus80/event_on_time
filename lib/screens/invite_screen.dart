@@ -183,6 +183,7 @@ class BtnRegresar extends StatelessWidget {
       height: 5.h,
       margin: EdgeInsets.only(bottom: 4.h),
       child: ElevatedButton(
+        // style: styleForText(),
         onPressed: () {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
             builder: (context) {
@@ -219,6 +220,7 @@ class StackConfirmation extends StatelessWidget {
                 width: 200,
                 child: Center(
                     child: ElevatedButton(
+                      // style: styleForText(),
                   child: (confirmation.map['result']['confirmation'])
                       ? const Text('Rechazar invitación')
                       : const Text('Confirmar asistencia'),
@@ -612,3 +614,9 @@ TextStyle estiloTexto(double size) {
   return TextStyle(
       color: Colors.white, fontSize: size, fontWeight: FontWeight.bold);
 }
+
+ButtonStyle styleForText() {
+    return ElevatedButton.styleFrom(
+        primary: Colors.amber,
+        textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold));
+  }

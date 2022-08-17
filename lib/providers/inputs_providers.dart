@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:validated/validated.dart' as validate;
 
+import 'auth_stadistic_user.dart';
 import 'auth_user_provider.dart';
 import 'custom_dropdown.dart';
 
@@ -20,7 +21,10 @@ class InputProvider with ChangeNotifier {
   validations(BuildContext context, bool switchP) {
     CustomDropdown confirmation =
         Provider.of<CustomDropdown>(context, listen: false);
-    AuthUserProvider user = Provider.of<AuthUserProvider>(context,listen: false);
+    AuthUserProvider user =
+        Provider.of<AuthUserProvider>(context, listen: false);
+    AuthStadisticUserProvider stadistic =
+        Provider.of<AuthStadisticUserProvider>(context, listen: false);
     String correo = '';
     String contra = '';
     int cReunion = 0;
@@ -61,10 +65,13 @@ class InputProvider with ChangeNotifier {
 
         Future.delayed(const Duration(seconds: 2), () {
           if (user.isDataGet()) {
-            Navigator.pop(dialogContext);
             Map<String, dynamic> map = user.mapaString();
-            Navigator.pushReplacementNamed(context, OrganizerScreen.route,
-                arguments: map);
+            stadistic.getStadistic(map['token']);
+            Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pop(dialogContext);
+              Navigator.pushReplacementNamed(context, OrganizerScreen.route,
+                  arguments: map);
+            });
           } else {
             Navigator.pop(dialogContext);
             showDialog(

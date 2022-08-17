@@ -8,6 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../providers/auth_stadistic_user.dart';
+import 'dart:math' as math;
 // import 'package:responsive_sizer/responsive_sizer.dart';
 
 class MyInvitesScreen extends StatelessWidget {
@@ -19,12 +20,18 @@ class MyInvitesScreen extends StatelessWidget {
     AuthStadisticUserProvider stadistic =
         Provider.of<AuthStadisticUserProvider>(context);
     List map = stadistic.mapaString;
+
+    Color colores =
+        Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
     // debugPrint('${map}');
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
         backgroundColor: const Color.fromRGBO(83, 111, 138, 1),
+        title: const Text('Mis invitaciones',
+            style: TextStyle(color: Colors.white)),
+        centerTitle: true,
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -41,7 +48,7 @@ class MyInvitesScreen extends StatelessWidget {
                       elevation: 0.0,
                       // margin: EdgeInsets.only(
                       //     left: 32.w, right: 32.w, top: 20.w, bottom: 0.w),
-                      color: const Color(0x00000000),
+                      color: Colors.white,
                       child: FlipCard(
                         fill: Fill.fillBack,
                         direction: FlipDirection.HORIZONTAL,
@@ -51,7 +58,7 @@ class MyInvitesScreen extends StatelessWidget {
                         },
                         front: Container(
                           decoration: const BoxDecoration(
-                            color: Colors.indigo,
+                            color: Color.fromRGBO(83, 111, 138, 1),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
                           ),
@@ -77,9 +84,9 @@ class MyInvitesScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(top: 3.h),
                                 width: 70.w,
                                 child: AutoSizeText(
-                                  row['status'] ? 'En progreso' : 'Finalizado',
+                                  row['status'] ? 'Pendiente' : 'Finalizado',
                                   style: const TextStyle(
-                                      color: Colors.green,
+                                      color: Colors.white,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                   maxLines: 2,
@@ -93,7 +100,7 @@ class MyInvitesScreen extends StatelessWidget {
                         ),
                         back: Container(
                           decoration: const BoxDecoration(
-                            color: Colors.indigo,
+                            color: Color.fromRGBO(83, 111, 138, 1),
                             borderRadius:
                                 BorderRadius.all(Radius.circular(8.0)),
                           ),
@@ -116,15 +123,13 @@ class MyInvitesScreen extends StatelessWidget {
                                         // Bind data source
                                         ChartData(
                                             'Confirmados',
-                                            double.parse(row['stadistics']
-                                                    ['amountConfirmation']
-                                                .toString()),
+                                            row['stadistics']
+                                                ['amountConfirmation'],
                                             Colors.green),
                                         ChartData(
                                             'Por confirmar',
-                                            double.parse(row['stadistics']
-                                                    ['amountNoConfirmation']
-                                                .toString()),
+                                            row['stadistics']
+                                                ['amountNoConfirmation'],
                                             Colors.amber),
                                       ],
                                       xValueMapper: (ChartData data, _) =>

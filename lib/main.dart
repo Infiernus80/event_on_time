@@ -1,5 +1,6 @@
 import 'package:event_on_time/class/invite_screen_class.dart';
 import 'package:event_on_time/class/validations.dart';
+import 'package:event_on_time/providers/auth_confirm_keeper.dart';
 import 'package:event_on_time/providers/auth_event_provider.dart';
 import 'package:event_on_time/providers/auth_stadistic_user.dart';
 import 'package:event_on_time/providers/auth_user_provider.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(
             create: (context) => AuthStadisticUserProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (context) => AuthConfirmProvider(),
           ),
         ],
         child: ResponsiveSizer(builder: (context, orientation, screenType) {

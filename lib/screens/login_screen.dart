@@ -165,7 +165,7 @@ class LoginScreen extends StatelessWidget {
                                 value: switchP.isInvitateGet,
                               ),
                               const Text(
-                                'Organizador',
+                                'Planificador',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ],

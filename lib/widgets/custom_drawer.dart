@@ -63,11 +63,7 @@ class CustomDrawer extends StatelessWidget {
             txt: 'Mis invitaciones',
             icon: Icons.list,
             funtion: () {
-              stadistic.getStadistic(map['token']);
-              Future.delayed(const Duration(seconds: 2),() {
                 Navigator.pushReplacementNamed(context, MyInvitesScreen.route);
-              });
-              
             },
           ),
           SizedBox(

@@ -1,4 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:event_on_time/providers/auth_confirm_keeper.dart';
+import 'package:event_on_time/screens/screens.dart';
 import 'package:event_on_time/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -6,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../providers/auth_user_provider.dart';
+// import '../providers/auth_user_provider.dart';
 import '../providers/keeper_scan.dart';
 
 class KeeperScreen extends StatelessWidget {
@@ -20,6 +22,7 @@ class KeeperScreen extends StatelessWidget {
         : {};
     
     KeeperGetProvider keeper = KeeperGetProvider();
+    
 
 
 
@@ -108,6 +111,7 @@ class KeeperScreen extends StatelessWidget {
                                     children: [
                                       InfoPerson(
                                         qr: map,
+                                        args: args,
                                       ),
                                     ],
                                   ),
@@ -135,6 +139,22 @@ class KeeperScreen extends StatelessWidget {
                       height: 300,
                       alignment: Alignment.center,
                       routeImage: 'assets/images/qr.png'),
+                ),
+                Container(
+                  width: 75.w,
+                  height: 5.h,
+                  margin: EdgeInsets.only(bottom: 3.h),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, LoginScreen.route);
+                    },
+                    style: ElevatedButton.styleFrom(
+                          primary: Colors.amber,
+                          onPrimary: Colors.white,
+                          textStyle: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                    child: const Text('Regresar'),
+                  ),
                 )
               ],
             ),
@@ -148,12 +168,13 @@ class KeeperScreen extends StatelessWidget {
 class InfoPerson extends StatelessWidget {
   const InfoPerson({
     Key? key,
-    required this.qr,
+    required this.qr, required this.args,
   }) : super(key: key);
-  final Map qr;
+  final Map qr,args;
 
   @override
   Widget build(BuildContext context) {
+    AuthConfirmProvider conm = Provider.of<AuthConfirmProvider>(context);
     return SizedBox(
       child: FittedBox(
         fit: BoxFit.fitWidth,
@@ -186,7 +207,9 @@ class InfoPerson extends StatelessWidget {
                         margin: EdgeInsets.only(top: 10.w),
                         child: ElevatedButton(
                           onPressed: () {
+                            conm.confirmarAssist(args['guest']['token'], qr['_id']);
                             Navigator.pop(context);
+
                           },
                           style: styleForText(),
                           child: const Text(
